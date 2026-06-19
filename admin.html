@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AdharAlo Control Center v5.6</title>
+<title>AdharAlo Control Center v5.7</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -21,7 +21,6 @@
     border: 1px solid rgba(255, 255, 255, 0.03);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
   }
-  /* NEW SLICK COMPACT FEEDS ASSETS CARD */
   .compact-asset-card {
     background: #0e1117;
     border: 1px solid rgba(255, 255, 255, 0.02);
@@ -289,15 +288,16 @@ function addMovie(){
   });
 }
 
+// BUG FIXED: Pure Dynamic Submission Reset Protection Layer
 function addEp(){
   var id=xid($('si').value),s=parseInt($('ss').value),e=parseInt($('se').value),url=$('su').value.trim();
-  if(!id||!url){toast('Invalid entries detected','e');return;}
+  if(!id||isNaN(s)||isNaN(e)||!url){toast('Invalid entries detected','e');return;}
   var item={id:id,type:'series',episodes:[{season:s,episode:e,streamUrl:url}]};
   post(item,function(d){
     D=d; 
     render();
     $('su').value=''; 
-    $('se').value=e+1;
+    $('se').value=e+1; // Increments episode count dynamically inside bounds
     toast('Episode mapping stream bound.');
   });
 }
