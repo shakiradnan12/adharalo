@@ -140,5 +140,16 @@
         "streamUrl": "http://ftp.adharalo.com/Series_1950-2023/English/2019/The%20Boys/s05/MovieLinkBD.com%20-%20The.Boys.S05E08.720p.Dual%5BHindi-English%5D.AAC.WEB-DL.h264.ESub.mp4"
       }
     ]
+  },
+  {
+    "id": "tt0903747",
+    "type": "series",
+    "episodes": [
+      {
+        "season": 1,
+        "episode": 1,
+        "streamUrl": "http://ftp1.adharalo.com/TvSeries/English/2008/Breaking%20Bad/s01/Breaking%20Bad%20S01%20E01%20BluRay%201080p%20Hindi%20DDP%202.0%20Eglish%20DTS%205.1%20x264%20ESub%20-%20mkvCinemas.mp4"
+      }
+    ]
   }
 ]
