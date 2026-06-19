@@ -3,6 +3,7 @@ const cors = require('cors');
 const session = require('express-session');
 const fs = require('fs');
 const path = require('path');
+const fetch = require('node-fetch');
 
 const app = express();
 const PORT = process.env.PORT || 7000;
@@ -30,7 +31,6 @@ app.use(session({
 async function loadMovies() {
   if (USE_JSONBIN) {
     try {
-      const fetch = require('node-fetch');
       const r = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_ID}/latest`, {
         headers: { 'X-Master-Key': JSONBIN_KEY }
       });
@@ -48,7 +48,6 @@ async function loadMovies() {
 async function saveMovies(data) {
   if (USE_JSONBIN) {
     try {
-      const fetch = require('node-fetch');
       await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_ID}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_KEY },
