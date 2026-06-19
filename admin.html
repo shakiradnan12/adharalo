@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AdharAlo Control Center v5.0 (Enterprise Cinema OS)</title>
+<title>AdharAlo Control Center v5.2 (Enterprise Cinema OS)</title>
 <!-- Tailwind CSS, Google Fonts & Font Awesome -->
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
 <style>
   body {
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-    background-color: #0b0c10; /* Netflix True Matte Dark */
+    background-color: #0b0c10;
     color: #e2e8f0;
     overflow-x: hidden;
     letter-spacing: -0.01em;
@@ -29,7 +29,7 @@
     transform: translateY(-2px);
   }
   .netflix-btn-primary {
-    background-color: #e50914; /* Netflix Red */
+    background-color: #e50914;
     color: #ffffff;
     transition: background-color 0.2s ease;
   }
@@ -43,11 +43,10 @@
     transition: all 0.2s ease;
   }
   .prime-input:focus {
-    border-color: #3b82f6; /* Premium Focus Highlight */
+    border-color: #3b82f6;
     background: #1c202b;
     outline: none;
   }
-  /* Custom Smooth Scrollbar */
   ::-webkit-scrollbar { width: 5px; }
   ::-webkit-scrollbar-track { background: #0b0c10; }
   ::-webkit-scrollbar-thumb { background: #222530; border-radius: 4px; }
@@ -57,7 +56,7 @@
 <body class="min-h-screen">
 
 <!-- PREMIUM AUTH OVERLAY -->
-<div id="lov" class="fixed inset-0 flex items-center justify-center z-50 px-4 bg(#0b0c10)/95 backdrop-blur-lg">
+<div id="lov" class="fixed inset-0 flex items-center justify-center z-50 px-4 bg-[#0b0c10]/95 backdrop-blur-lg">
   <div class="premium-card p-12 rounded-2xl w-full max-w-md">
     <div class="text-center mb-8">
       <h2 class="text-3xl font-extrabold tracking-tight text-white mb-1">ADHARALO<span class="text-[#e50914]">.</span></h2>
@@ -66,7 +65,7 @@
     <div class="mb-6 relative">
       <input id="pw" type="password" placeholder="Password Security Key" class="prime-input w-full px-5 py-4 rounded-xl text-sm font-mono text-center outline-none" onkeydown="if(event.key==='Enter')login()">
     </div>
-    <button class="w-full nettech-btn netflex netflix-btn-primary text-xs tracking-wider font-bold py-4 rounded-xl shadow-lg transition-all" onclick="login()">SIGN IN TO DATABASE</button>
+    <button class="w-full netflix-btn-primary text-xs tracking-wider font-bold py-4 rounded-xl shadow-lg transition-all" onclick="login()">SIGN IN TO DATABASE</button>
     <p id="lerr" class="text-rose-500 text-xs mt-4 hidden text-center font-medium"><i class="fa-solid fa-circle-exclamation mr-1.5"></i> Authentication Failed. Verify Key.</p>
   </div>
 </div>
@@ -211,9 +210,7 @@
 <div id="toast" class="fixed bottom-8 right-8 px-6 py-4 rounded-xl text-xs font-bold shadow-2xl transform translate-y-32 opacity-0 transition-all duration-300 z-50 flex items-center gap-3 backdrop-blur-md"></div>
 
 <script>
-// Static Token setup 
 var OMDB_API_KEY = 'deb30ab'; 
-
 var D = [];
 var nameCache = {}; 
 var BASE = window.location.origin;
@@ -256,7 +253,7 @@ function fetchName(id, elementId, posterId, metaId) {
     if(el) el.textContent = cacheData.title;
     if(pEl && cacheData.poster !== 'N/A') pEl.src = cacheData.poster;
     if(mEl) mEl.textContent = cacheData.meta;
-    var parent = el.closest(currentTab === 'movie' ? '.movie-item' : '.series-item');
+    var parent = el ? el.closest(currentTab === 'movie' ? '.movie-item' : '.series-item') : null;
     if(parent) parent.setAttribute('data-name', cacheData.searchString);
     return;
   }
@@ -282,7 +279,7 @@ function fetchName(id, elementId, posterId, metaId) {
         if(pEl && data.Poster !== 'N/A') pEl.src = data.Poster;
         if(mEl) mEl.textContent = metaText;
         
-        var parent = el.closest(currentTab === 'movie' ? '.movie-item' : '.series-item');
+        var parent = el ? el.closest(currentTab === 'movie' ? '.movie-item' : '.series-item') : null;
         if(parent) parent.setAttribute('data-name', nameCache[id].searchString);
       } else {
         if(el) el.textContent = id;
@@ -311,8 +308,11 @@ function addEp(){
   if(!id||!url){toast('Invalid parameters entered','e');return;}
   var item={id:id,type:'series',episodes:[{season:s,episode:e,streamUrl:url}]};
   post(item,function(d){
-    D=d; render();
-    $('su').value=''; $('se').value=e+1;
+    D=d; 
+    // BUG FIX: State management execution stack cleared & deep synced
+    render();
+    $('su').value=''; 
+    $('se').value=e+1;
     toast('Episode streaming index map successfully established.');
   });
 }
