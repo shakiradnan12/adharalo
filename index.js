@@ -92,7 +92,7 @@ function requireAuth(req, res, next) {
 const manifest = {
   id: 'com.personal.ftp.movies',
   version: '2.0.0',
-  name: 'My FTP Movies',
+  name: 'AdharAlo Support By Adnan',
   description: 'Personal FTP movie & series collection',
   resources: ['catalog', 'meta', 'stream'],
   types: ['movie', 'series'],
