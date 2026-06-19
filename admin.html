@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My FTP Movies</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0d0d14;color:#e2e2e8;min-height:100vh}
+.bar{background:#13131e;border-bottom:1px solid #1e1e30;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:54px}
+.logo{font-size:.95rem;font-weight:600;color:#fff}
+.logo em{color:#9070c0;font-style:normal}
+.wrap{max-width:860px;margin:0 auto;padding:1.75rem 1.25rem}
+.ibar{background:#13131e;border:1px solid #1e1e30;border-radius:10px;padding:.9rem 1.1rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1.75rem;flex-wrap:wrap}
+.iurl{font-family:monospace;font-size:11.5px;color:#5a5a90;word-break:break-all}
+.tabs{display:flex;gap:6px;margin-bottom:1.25rem}
+.tab{padding:7px 18px;border-radius:8px;font-size:13.5px;font-weight:500;cursor:pointer;border:1px solid #2a2a40;background:transparent;color:#6868a0;transition:all .15s}
+.tab.on{background:#1a1030;border-color:#7b5ea7;color:#c4a0f0}
+.card{background:#13131e;border:1px solid #1e1e30;border-radius:11px;padding:1.15rem;margin-bottom:.9rem}
+.card h3{font-size:13px;color:#7070a0;margin-bottom:.9rem;font-weight:500}
+.row{display:grid;gap:9px;margin-bottom:9px}
+.two{grid-template-columns:1fr 1fr}
+.three{grid-template-columns:75px 75px 1fr}
+label{font-size:11.5px;color:#505080;display:block;margin-bottom:3px}
+input[type=text],input[type=number],input[type=password]{width:100%;background:#08080f;border:1px solid #252540;border-radius:7px;padding:8px 10px;font-size:13px;color:#e2e2e8;outline:none;transition:border .15s}
+input:focus{border-color:#7b5ea7}
+input::placeholder{color:#30305a}
+.btn{padding:7px 15px;border-radius:7px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid #2a2a40;background:transparent;color:#9090b0;transition:all .15s}
+.btn:hover{background:#1a1a2a;color:#fff}
+.btn-p{background:#7b5ea7;border-color:#7b5ea7;color:#fff}
+.btn-p:hover{background:#9070c0}
+.btn-d{color:#c06060;border-color:#301818}
+.btn-d:hover{background:#1e0f0f}
+.btn-s{padding:4px 9px;font-size:12px}
+.item{background:#09090f;border:1px solid #1a1a28;border-radius:8px;padding:9px 13px;display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.iid{font-size:13px;font-weight:500}
+.imeta{font-size:11px;color:#404070;margin-top:2px}
+.badge{font-size:10px;padding:2px 7px;border-radius:999px;font-weight:500;margin-right:6px}
+.bm{background:#1a0d35;color:#a07ad0}
+.bs{background:#0a1a35;color:#5090d0}
+.epl{margin-top:8px;padding-top:8px;border-top:1px solid #181828}
+.epr{display:flex;align-items:center;gap:8px;padding:3px 0;font-size:12px;color:#505080}
+.epu{font-family:monospace;font-size:11px;color:#383870;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.empty{text-align:center;color:#303060;font-size:13px;padding:2rem}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;z-index:99}
+.lbox{background:#13131e;border:1px solid #232336;border-radius:14px;padding:2rem 1.75rem;width:300px;text-align:center}
+.lbox h2{font-size:1rem;color:#fff;margin-bottom:1.25rem}
+.toast{position:fixed;bottom:1.25rem;right:1.25rem;border-radius:9px;padding:9px 16px;font-size:13px;transform:translateY(60px);opacity:0;transition:all .25s;z-index:200;pointer-events:none}
+.tok{background:#0f1f0f;border:1px solid #1e4e1e;color:#70c070}
+.terr{background:#1f0f0f;border:1px solid #4e1e1e;color:#c07070}
+.tshow{transform:translateY(0);opacity:1}
+</style>
+</head>
+<body>
+
+<div id="lov" class="overlay">
+  <div class="lbox">
+    <div style="font-size:2.2rem;margin-bottom:.5rem">🎬</div>
+    <h2>Admin Login</h2>
+    <div class="row" style="margin-bottom:.75rem">
+      <input id="pw" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')login()">
+    </div>
+    <button class="btn btn-p" style="width:100%;padding:9px" onclick="login()">Login করুন</button>
+    <p id="lerr" style="color:#c06060;font-size:12px;margin-top:.6rem;display:none">ভুল password!</p>
+  </div>
+</div>
+
+<div id="app" style="display:none">
+  <div class="bar">
+    <div class="logo">🎬 <em>My FTP</em> Movies</div>
+    <div style="display:flex;gap:8px">
+      <a id="install-link" href="#" class="btn btn-s">⚡ Stremio Install</a>
+      <button class="btn btn-s btn-d" onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="ibar">
+      <div>
+        <div style="font-size:11px;color:#404070;margin-bottom:3px">Manifest URL</div>
+        <div class="iurl" id="manifest-url"></div>
+      </div>
+      <button class="btn btn-s" onclick="cp()">Copy</button>
+    </div>
+
+    <div class="tabs">
+      <button class="tab on" id="tm" onclick="sw('movie')">🎬 মুভি</button>
+      <button class="tab" id="ts" onclick="sw('series')">📺 সিরিজ</button>
+    </div>
+
+    <div id="pm">
+      <div class="card">
+        <h3>নতুন মুভি যোগ করুন</h3>
+        <div class="row"><div>
+          <label>IMDB লিঙ্ক বা ID</label>
+          <input id="mi" type="text" placeholder="https://www.imdb.com/title/tt0816692/ অথবা tt0816692">
+        </div></div>
+        <div class="row"><div>
+          <label>Stream URL</label>
+          <input id="mu" type="text" placeholder="http://your-ftp.com/movies/film.mkv">
+        </div></div>
+        <div class="row two">
+          <div><label>1080p URL (ঐচ্ছিক)</label><input id="m1" type="text" placeholder="http://...1080p.mkv"></div>
+          <div><label>720p URL (ঐচ্ছিক)</label><input id="m7" type="text" placeholder="http://...720p.mkv"></div>
+        </div>
+        <button class="btn btn-p" onclick="addMovie()" style="width:100%;padding:9px;margin-top:4px">+ মুভি যোগ করুন</button>
+      </div>
+      <div id="ml"></div>
+    </div>
+
+    <div id="ps" style="display:none">
+      <div class="card">
+        <h3>এপিসোড যোগ করুন</h3>
+        <div class="row"><div>
+          <label>IMDB লিঙ্ক বা ID (সিরিজের)</label>
+          <input id="si" type="text" placeholder="https://www.imdb.com/title/tt0944947/ অথবা tt0944947">
+        </div></div>
+        <div class="row three">
+          <div><label>Season</label><input id="ss" type="number" min="1" value="1"></div>
+          <div><label>Episode</label><input id="se" type="number" min="1" value="1"></div>
+          <div><label>Stream URL</label><input id="su" type="text" placeholder="http://your-ftp.com/s01e01.mkv"></div>
+        </div>
+        <button class="btn btn-p" onclick="addEp()" style="width:100%;padding:9px;margin-top:4px">+ এপিসোড যোগ করুন</button>
+      </div>
+      <div id="sl"></div>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+var D = [];
+var BASE = window.location.origin;
+var $=function(id){return document.getElementById(id);};
+
+function xid(v){var m=v.match(/tt\d+/);return m?m[0]:v.trim();}
+
+function init(){
+  $('manifest-url').textContent = BASE + '/manifest.json';
+  $('install-link').href = 'stremio://' + window.location.host + '/manifest.json';
+  fetch('/api/me').then(function(r){return r.json();}).then(function(me){
+    if(me.loggedIn){show();load();}
+  });
+}
+
+function show(){$('lov').style.display='none';$('app').style.display='block';}
+
+function login(){
+  fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:$('pw').value})})
+  .then(function(r){
+    if(r.ok){show();load();}
+    else $('lerr').style.display='block';
+  });
+}
+
+function logout(){
+  fetch('/api/logout',{method:'POST'}).then(function(){location.reload();});
+}
+
+function load(){
+  fetch('/api/movies').then(function(r){return r.json();}).then(function(d){D=d;render();});
+}
+
+function addMovie(){
+  var id=xid($('mi').value),url=$('mu').value.trim(),u1=$('m1').value.trim(),u7=$('m7').value.trim();
+  if(!id||!url){toast('IMDB ID ও URL দিন','e');return;}
+  var item={id:id,type:'movie',streamUrl:url};
+  if(u1)item.streamUrl1080p=u1;
+  if(u7)item.streamUrl720p=u7;
+  post(item,function(d){
+    D=d;render();
+    $('mi').value=$('mu').value=$('m1').value=$('m7').value='';
+    toast('মুভি যোগ হয়েছে!');
+  });
+}
+
+function addEp(){
+  var id=xid($('si').value),s=parseInt($('ss').value),e=parseInt($('se').value),url=$('su').value.trim();
+  if(!id||!url){toast('IMDB ID ও URL দিন','e');return;}
+  var item={id:id,type:'series',episodes:[{season:s,episode:e,streamUrl:url}]};
+  post(item,function(d){
+    D=d;render();
+    $('su').value='';$('se').value=e+1;
+    toast('এপিসোড যোগ হয়েছে!');
+  });
+}
+
+function post(item,cb){
+  fetch('/api/movies',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(item)})
+  .then(function(r){return r.json();}).then(function(d){cb(d.data);});
+}
+
+function del(id){
+  if(!confirm(id+' মুছে ফেলবেন?'))return;
+  fetch('/api/movies/'+id,{method:'DELETE'}).then(function(r){return r.json();}).then(function(d){D=d.data;render();toast('মুছে ফেলা হয়েছে');});
+}
+
+function delEp(id,s,e){
+  fetch('/api/movies/'+id+'/episodes/'+s+'/'+e,{method:'DELETE'}).then(function(r){return r.json();}).then(function(d){D=d.data;render();toast('এপিসোড মুছে ফেলা হয়েছে');});
+}
+
+function render(){
+  var mv=D.filter(function(m){return m.type==='movie';}),
+      sr=D.filter(function(m){return m.type==='series';});
+
+  if(mv.length===0){$('ml').innerHTML='<div class="empty">কোনো মুভি নেই</div>';}
+  else {
+    $('ml').innerHTML=mv.map(function(m){
+      var quals=[m.streamUrl1080p?'1080p':'',m.streamUrl720p?'720p':'',m.streamUrl?'Default':''].filter(Boolean).join(' · ');
+      return '<div class="item"><div><div class="iid"><span class="badge bm">Movie</span>'+m.id+'</div><div class="imeta">'+quals+'</div></div><button class="btn btn-s btn-d" onclick="del(\''+m.id+'\')">মুছুন</button></div>';
+    }).join('');
+  }
+
+  if(sr.length===0){$('sl').innerHTML='<div class="empty">কোনো সিরিজ নেই</div>';}
+  else {
+    $('sl').innerHTML=sr.map(function(s){
+      var eps=(s.episodes||[]).map(function(e){
+        var sn=String(e.season).padStart(2,'0'),en=String(e.episode).padStart(2,'0');
+        return '<div class="epr"><span style="min-width:48px">S'+sn+'E'+en+'</span><span class="epu">'+e.streamUrl+'</span><button class="btn btn-s btn-d" onclick="delEp(\''+s.id+'\','+e.season+','+e.episode+')">×</button></div>';
+      }).join('');
+      return '<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><div><span class="badge bs">Series</span><strong style="font-size:13px">'+s.id+'</strong></div><button class="btn btn-s btn-d" onclick="del(\''+s.id+'\')">সব মুছুন</button></div><div class="epl">'+eps+'</div></div>';
+    }).join('');
+  }
+}
+
+function sw(t){
+  $('pm').style.display=t==='movie'?'block':'none';
+  $('ps').style.display=t==='series'?'block':'none';
+  $('tm').className='tab'+(t==='movie'?' on':'');
+  $('ts').className='tab'+(t==='series'?' on':'');
+}
+
+function cp(){
+  navigator.clipboard.writeText(BASE+'/manifest.json').then(function(){
+    toast('Copied!');
+  });
+}
+
+function toast(msg,type){
+  var t=$('toast');t.textContent=msg;
+  t.className='toast '+(type==='e'?'terr':'tok');
+  setTimeout(function(){t.className+=' tshow';},10);
+  setTimeout(function(){t.className=t.className.replace(' tshow','');},2500);
+}
+
+init();
+</script>
+</body>
+</html>

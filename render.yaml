@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: adharalo-addon-ftp
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: ADMIN_PASSWORD
+        value: Stremio@2025!
+      - key: SESSION_SECRET
+        value: xK9mP2vL7qR4nW8zJ3
+      - key: JSONBIN_ID
+        sync: false
+      - key: JSONBIN_KEY
+        sync: false
