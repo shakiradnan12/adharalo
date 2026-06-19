@@ -3,211 +3,215 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AdharAlo Cyber Engine v4.0 (OMDb Pro Ultra)</title>
+<title>AdharAlo Control Center v5.0 (Enterprise Cinema OS)</title>
+<!-- Tailwind CSS, Google Fonts & Font Awesome -->
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
   body {
-    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-    background: radial-gradient(circle at 50% 0%, #161233, #07040d);
-    color: #f8fafc;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    background-color: #0b0c10; /* Netflix True Matte Dark */
+    color: #e2e8f0;
     overflow-x: hidden;
+    letter-spacing: -0.01em;
   }
-  .title-font {
-    font-family: 'Space Grotesk', sans-serif;
+  .premium-card {
+    background: #11131a;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
+    transition: all 0.25s ease-in-out;
   }
-  body::before {
-    content: "";
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-image: linear-gradient(rgba(168, 85, 247, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(168, 85, 247, 0.03) 1px, transparent 1px);
-    background-size: 30px 30px;
-    z-index: -1;
-    pointer-events: none;
+  .premium-card:hover {
+    background: #141720;
+    border-color: rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px);
   }
-  .cyber-card {
-    background: rgba(13, 9, 28, 0.65);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  .netflix-btn-primary {
+    background-color: #e50914; /* Netflix Red */
+    color: #ffffff;
+    transition: background-color 0.2s ease;
   }
-  .cyber-card:hover {
-    border-color: rgba(168, 85, 247, 0.2);
-    box-shadow: 0 0 30px rgba(168, 85, 247, 0.05);
+  .netflix-btn-primary:hover {
+    background-color: #b80710;
   }
-  .neon-glow-purple { box-shadow: 0 0 20px rgba(168, 85, 247, 0.4); }
-  .neon-glow-indigo { box-shadow: 0 0 20px rgba(99, 102, 241, 0.4); }
-  .cyber-input {
-    background: rgba(4, 2, 10, 0.8);
+  .prime-input {
+    background: #181b24;
     border: 1px solid rgba(255, 255, 255, 0.08);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #ffffff;
+    transition: all 0.2s ease;
   }
-  .cyber-input:focus {
-    border-color: #a855f7;
-    box-shadow: 0 0 15px rgba(168, 85, 247, 0.25);
-    background: rgba(4, 2, 10, 0.95);
+  .prime-input:focus {
+    border-color: #3b82f6; /* Premium Focus Highlight */
+    background: #1c202b;
+    outline: none;
   }
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: rgba(168, 85, 247, 0.2); border-radius: 10px; }
-  ::-webkit-scrollbar-thumb:hover { background: rgba(168, 85, 247, 0.4); }
+  /* Custom Smooth Scrollbar */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: #0b0c10; }
+  ::-webkit-scrollbar-thumb { background: #222530; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: #e50914; }
 </style>
 </head>
 <body class="min-h-screen">
 
-<div id="lov" class="fixed inset-0 flex items-center justify-center z-50 px-4 bg-[#050309]/80 backdrop-blur-md">
-  <div class="cyber-card p-10 rounded-3xl w-full max-w-md relative overflow-hidden">
-    <div class="w-20 h-20 bg-gradient-to-tr from-purple-600 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-6 text-3xl text-white shadow-xl neon-glow-purple">
-      <i class="fa-solid fa-terminal animate-pulse"></i>
+<!-- PREMIUM AUTH OVERLAY -->
+<div id="lov" class="fixed inset-0 flex items-center justify-center z-50 px-4 bg(#0b0c10)/95 backdrop-blur-lg">
+  <div class="premium-card p-12 rounded-2xl w-full max-w-md">
+    <div class="text-center mb-8">
+      <h2 class="text-3xl font-extrabold tracking-tight text-white mb-1">ADHARALO<span class="text-[#e50914]">.</span></h2>
+      <p class="text-xs text-slate-500 uppercase tracking-widest font-semibold">Cinema Server Architecture</p>
     </div>
-    <h2 class="title-font text-2xl font-bold tracking-tight text-center bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">CYBER CORE LOGIN</h2>
-    <p class="text-xs text-purple-400/60 text-center tracking-widest uppercase mt-1 mb-8">Secure System Authentication</p>
-    <div class="mb-5 relative">
-      <span class="absolute left-4 top-3.5 text-slate-500 text-sm"><i class="fa-solid fa-lock"></i></span>
-      <input id="pw" type="password" placeholder="ENTER CODESECURE ACCESS" class="cyber-input w-full pl-11 pr-4 py-3.5 rounded-xl text-xs tracking-widest text-white text-center font-mono outline-none" onkeydown="if(event.key==='Enter')login()">
+    <div class="mb-6 relative">
+      <input id="pw" type="password" placeholder="Password Security Key" class="prime-input w-full px-5 py-4 rounded-xl text-sm font-mono text-center outline-none" onkeydown="if(event.key==='Enter')login()">
     </div>
-    <button class="w-full bg-gradient-to-r from-purple-600 via-purple-700 to-indigo-600 hover:opacity-90 text-xs tracking-widest title-font font-bold py-4 rounded-xl transition-all duration-300 shadow-lg shadow-purple-600/20 active:scale-[0.98]" onclick="login()">INITIALIZE SYSTEM</button>
-    <p id="lerr" class="text-red-400 text-xs mt-4 hidden flex items-center justify-center gap-1.5 font-mono"><i class="fa-solid fa-triangle-exclamation"></i> ACCESS DENIED: INVALID KEY</p>
+    <button class="w-full nettech-btn netflex netflix-btn-primary text-xs tracking-wider font-bold py-4 rounded-xl shadow-lg transition-all" onclick="login()">SIGN IN TO DATABASE</button>
+    <p id="lerr" class="text-rose-500 text-xs mt-4 hidden text-center font-medium"><i class="fa-solid fa-circle-exclamation mr-1.5"></i> Authentication Failed. Verify Key.</p>
   </div>
 </div>
 
-<div id="app" class="hidden min-h-screen pb-20">
-  <nav class="cyber-card sticky top-0 z-40 px-6 lg:px-12 py-4 flex items-center justify-between border-b border-white/5 bg-[#0a0714]/80">
-    <div class="flex items-center gap-3">
-      <div class="w-3 h-3 rounded-full bg-emerald-500 relative flex"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span></div>
-      <span class="title-font font-bold text-lg lg:text-xl tracking-wider text-white">ADHARALO <span class="bg-gradient-to-r from-purple-400 to-indigo-400 bg-clip-text text-transparent font-medium text-sm">OS v4.0</span></span>
+<!-- MAIN NETFLIX LAYOUT -->
+<div id="app" class="hidden min-h-screen pb-24">
+  <!-- Brand Header -->
+  <nav class="sticky top-0 z-40 px-6 lg:px-16 py-5 flex items-center justify-between border-b border-white/5 bg-[#0b0c10]/90 backdrop-blur-md">
+    <div class="flex items-center gap-6">
+      <span class="font-extrabold text-2xl tracking-tighter text-white">ADHARALO<span class="text-[#e50914]">PRO</span></span>
+      <div class="hidden md:flex items-center gap-1.5 text-xs font-semibold text-emerald-400 bg-emerald-500/5 px-3 py-1.5 rounded-full border border-emerald-500/10">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Cloud Stream Node: Online
+      </div>
     </div>
     <div class="flex items-center gap-4">
-      <a id="install-link" href="#" class="hidden sm:flex bg-gradient-to-r from-purple-600/10 to-indigo-600/10 hover:from-purple-600/20 hover:to-indigo-600/20 text-purple-300 border border-purple-500/20 text-xs font-bold px-4 py-2.5 rounded-xl items-center gap-2 transition-all"><i class="fa-solid fa-circle-nodes"></i> Mount on Stremio</a>
-      <button class="bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 text-xs font-bold p-3 rounded-xl transition-all" onclick="logout()"><i class="fa-solid fa-power-off"></i></button>
+      <a id="install-link" href="#" class="bg-white/5 hover:bg-white/10 text-white text-xs font-bold px-4 py-2.5 rounded-lg border border-white/10 transition-all"><i class="fa-solid fa-clapperboard mr-1.5"></i> Stremio Client</a>
+      <button class="bg-white/5 hover:bg-rose-500/20 text-slate-400 hover:text-rose-400 p-3 rounded-lg border border-white/5 transition-all" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i></button>
     </div>
   </nav>
 
-  <div class="max-w-6xl mx-auto px-4 mt-10">
-    <div class="cyber-card p-6 rounded-3xl flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 border border-purple-500/10">
+  <div class="max-w-7xl mx-auto px-6 mt-10">
+    <!-- ENDPOINT METRICS -->
+    <div class="premium-card p-6 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
       <div class="flex items-center gap-4">
-        <div class="w-12 h-12 rounded-2xl bg-purple-500/10 flex items-center justify-center text-purple-400 text-lg"><i class="fa-solid fa-satellite-dish"></i></div>
+        <div class="w-11 h-11 rounded-xl bg-white/5 flex items-center justify-center text-slate-400 text-sm"><i class="fa-solid fa-server"></i></div>
         <div>
-          <div class="text-[10px] uppercase font-bold tracking-widest text-purple-400 mb-0.5">Live Stremio Engine Endpoint</div>
-          <div class="font-mono text-xs text-slate-300 select-all" id="manifest-url">CONNECTING...</div>
+          <div class="text-[10px] uppercase font-bold tracking-wider text-slate-400 mb-0.5">Stremio Live API Manifest Base</div>
+          <div class="font-mono text-xs text-white/80 select-all" id="manifest-url">CONNECTING...</div>
         </div>
       </div>
-      <button class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-xs font-bold px-6 py-3 rounded-xl transition shadow-lg" onclick="cp()"><i class="fa-regular fa-clone"></i> COPY MANIFEST</button>
+      <button class="bg-white hover:bg-slate-200 text-black text-xs font-bold px-5 py-3 rounded-xl transition shadow-md" onclick="cp()"><i class="fa-regular fa-copy mr-1.5"></i> Copy API Endpoint</button>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-10">
-      <div class="cyber-card p-6 rounded-2xl flex items-center justify-between relative overflow-hidden group">
-        <div class="flex items-center gap-4">
-          <div class="w-14 h-14 rounded-2xl bg-purple-500/10 flex items-center justify-center text-2xl text-purple-400"><i class="fa-solid fa-photo-film"></i></div>
-          <div>
-            <div class="text-xs uppercase tracking-wider text-slate-400">MOVIES DEPLOYED</div>
-            <div class="text-3xl font-bold title-font mt-1 text-white" id="count-movies">0</div>
-          </div>
+    <!-- METRIC TILES -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
+      <div class="premium-card p-6 rounded-xl flex items-center justify-between">
+        <div>
+          <div class="text-xs font-bold tracking-wider text-slate-400 uppercase">Movies Mounted</div>
+          <div class="text-4xl font-extrabold mt-1.5 text-white" id="count-movies">0</div>
         </div>
+        <div class="text-2xl text-slate-600"><i class="fa-solid fa-film"></i></div>
       </div>
-      <div class="cyber-card p-6 rounded-2xl flex items-center justify-between relative overflow-hidden group">
-        <div class="flex items-center gap-4">
-          <div class="w-14 h-14 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-2xl text-indigo-400"><i class="fa-solid fa-tv"></i></div>
-          <div>
-            <div class="text-xs uppercase tracking-wider text-slate-400">SERIES STACK</div>
-            <div class="text-3xl font-bold title-font mt-1 text-white" id="count-series">0</div>
-          </div>
+      <div class="premium-card p-6 rounded-xl flex items-center justify-between">
+        <div>
+          <div class="text-xs font-bold tracking-wider text-slate-400 uppercase">TV Series Library</div>
+          <div class="text-4xl font-extrabold mt-1.5 text-white" id="count-series">0</div>
         </div>
+        <div class="text-2xl text-slate-600"><i class="fa-solid fa-tv"></i></div>
       </div>
-      <div class="cyber-card p-6 rounded-2xl flex items-center justify-between relative overflow-hidden group">
-        <div class="flex items-center gap-4">
-          <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-2xl text-emerald-400"><i class="fa-solid fa-bolt-lightning"></i></div>
-          <div>
-            <div class="text-xs uppercase tracking-wider text-slate-400">OMDB ULTRA ENGINE</div>
-            <div class="text-sm font-bold mt-1 text-emerald-400 font-mono tracking-widest">KEY STATUS: CONNECTED</div>
-          </div>
+      <div class="premium-card p-6 rounded-xl flex items-center justify-between">
+        <div>
+          <div class="text-xs font-bold tracking-wider text-slate-400 uppercase">OMDb Pro Status</div>
+          <div class="text-sm font-bold mt-3 text-emerald-400 flex items-center gap-1.5"><i class="fa-solid fa-shield-halved text-xs"></i> Enterprise Engine Active</div>
         </div>
+        <div class="text-2xl text-slate-600"><i class="fa-solid fa-bolt"></i></div>
       </div>
     </div>
 
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-      <div class="flex gap-2 p-1 bg-black/40 rounded-2xl max-w-sm border border-white/5">
-        <button class="px-6 py-2.5 text-xs font-bold tracking-wider rounded-xl transition-all" id="tm" onclick="sw('movie')"><i class="fa-solid fa-film mr-2"></i>MOVIES ENGINE</button>
-        <button class="px-6 py-2.5 text-xs font-bold tracking-wider rounded-xl transition-all" id="ts" onclick="sw('series')"><i class="fa-solid fa-bolt mr-2"></i>SERIES ENGINE</button>
+    <!-- TAB ACTIONS & LIVE FILTER -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 border-b border-white/5 pb-4">
+      <div class="flex gap-6">
+        <button class="text-sm font-bold pb-3 relative transition-all border-b-2" id="tm" onclick="sw('movie')">Movies System</button>
+        <button class="text-sm font-bold pb-3 relative transition-all border-b-2" id="ts" onclick="sw('series')">TV Series Cluster</button>
       </div>
       <div class="relative w-full md:max-w-xs">
         <span class="absolute left-4 top-3 text-slate-500 text-xs"><i class="fa-solid fa-magnifying-glass"></i></span>
-        <input id="q-search" type="text" placeholder="নাম, জেনার বা আইডি দিয়ে লাইভ সার্চ..." class="cyber-input w-full pl-10 pr-4 py-2.5 rounded-xl text-xs text-white" oninput="filterItems()">
+        <input id="q-search" type="text" placeholder="Search library items..." class="prime-input w-full pl-10 pr-4 py-2.5 rounded-lg text-xs" oninput="filterItems()">
       </div>
     </div>
 
+    <!-- CORE OPERATION CONTROL PANELS -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <!-- CONTROL INTERFACE -->
       <div class="lg:col-span-5">
-        <div id="pm" class="cyber-card p-6 lg:p-8 rounded-3xl border-t-2 border-purple-500">
-          <h3 class="title-font text-sm font-bold tracking-widest mb-6 text-purple-400 uppercase flex items-center gap-2.5"><i class="fa-solid fa-square-plus"></i> Deploy Movie Cluster</h3>
+        <!-- MOVIE CONFIGURATION -->
+        <div id="pm" class="premium-card p-6 lg:p-8 rounded-2xl">
+          <h3 class="text-base font-bold mb-6 text-white tracking-tight flex items-center gap-2"><i class="fa-solid fa-square-plus text-slate-400"></i> Inject New Movie Node</h3>
           <div class="space-y-5">
             <div>
-              <label class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-2">IMDB Identity</label>
-              <input id="mi" type="text" placeholder="tt0816692 বা সম্পুর্ণ IMDB লিংক" class="cyber-input w-full px-4 py-3 rounded-xl text-xs font-mono text-white">
+              <label class="text-[11px] font-semibold text-slate-400 block mb-2">IMDb URL / Identity Token</label>
+              <input id="mi" type="text" placeholder="e.g. tt0816692" class="prime-input w-full px-4 py-3 rounded-lg text-xs font-mono">
             </div>
             <div>
-              <label class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-2">Core Stream URL</label>
-              <input id="mu" type="text" placeholder="http://ftp.server/movie.mkv" class="cyber-input w-full px-4 py-3 rounded-xl text-xs text-white">
+              <label class="text-[11px] font-semibold text-slate-400 block mb-2">Primary Stream Endpoint</label>
+              <input id="mu" type="text" placeholder="http://source-server.com/video.mkv" class="prime-input w-full px-4 py-3 rounded-lg text-xs">
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-2">High Definition (1080p)</label>
-                <input id="m1" type="text" placeholder="ঐচ্ছিক লিংক" class="cyber-input w-full px-3 py-3 rounded-xl text-xs text-white">
+                <label class="text-[11px] font-semibold text-slate-400 block mb-2">1080p URL (Optional)</label>
+                <input id="m1" type="text" placeholder="Direct link" class="prime-input w-full px-3 py-3 rounded-lg text-xs">
               </div>
               <div>
-                <label class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-2">Standard (720p)</label>
-                <input id="m7" type="text" placeholder="ঐচ্ছিক লিংক" class="cyber-input w-full px-3 py-3 rounded-xl text-xs text-white">
+                <label class="text-[11px] font-semibold text-slate-400 block mb-2">720p URL (Optional)</label>
+                <input id="m7" type="text" placeholder="Direct link" class="prime-input w-full px-3 py-3 rounded-lg text-xs">
               </div>
             </div>
-            <button class="w-full bg-gradient-to-r from-purple-600 to-purple-800 text-white text-xs font-bold py-4 rounded-xl transition mt-2 tracking-wider uppercase" onclick="addMovie()"><i class="fa-solid fa-plus mr-2"></i> Inject Into Database</button>
+            <button class="w-full netflix-btn-primary text-white text-xs font-bold py-4 rounded-lg transition mt-2 uppercase tracking-wide" onclick="addMovie()"><i class="fa-solid fa-plus mr-1.5"></i> Deploy Movie Assets</button>
           </div>
         </div>
 
-        <div id="ps" class="cyber-card p-6 lg:p-8 rounded-3xl border-t-2 border-indigo-500 hidden">
-          <h3 class="title-font text-sm font-bold tracking-widest mb-6 text-indigo-400 uppercase flex items-center gap-2.5"><i class="fa-solid fa-circle-plus"></i> Mount Series Episode</h3>
+        <!-- SERIES CONFIGURATION -->
+        <div id="ps" class="premium-card p-6 lg:p-8 rounded-2xl hidden">
+          <h3 class="text-base font-bold mb-6 text-white tracking-tight flex items-center gap-2"><i class="fa-solid fa-circle-plus text-slate-400"></i> Mount Series Index</h3>
           <div class="space-y-5">
             <div>
-              <label class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-2">Series IMDB Identity</label>
-              <input id="si" type="text" placeholder="tt0944947 বা টিভি সিরিজ লিংক" class="cyber-input w-full px-4 py-3 rounded-xl text-xs font-mono text-white">
+              <label class="text-[11px] font-semibold text-slate-400 block mb-2">Series IMDb Identifier</label>
+              <input id="si" type="text" placeholder="e.g. tt0944947" class="prime-input w-full px-4 py-3 rounded-lg text-xs font-mono">
             </div>
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-2">Season Index</label>
-                <input id="ss" type="number" min="1" value="1" class="cyber-input w-full px-4 py-3 rounded-xl text-xs font-bold text-white text-center">
+                <label class="text-[11px] font-semibold text-slate-400 block mb-2">Season Index</label>
+                <input id="ss" type="number" min="1" value="1" class="prime-input w-full px-4 py-3 rounded-lg text-xs font-bold text-center">
               </div>
               <div>
-                <label class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-2">Episode Index</label>
-                <input id="se" type="number" min="1" value="1" class="cyber-input w-full px-4 py-3 rounded-xl text-xs font-bold text-white text-center">
+                <label class="text-[11px] font-semibold text-slate-400 block mb-2">Episode Index</label>
+                <input id="se" type="number" min="1" value="1" class="prime-input w-full px-4 py-3 rounded-lg text-xs font-bold text-center">
               </div>
             </div>
             <div>
-              <label class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-2">Stream Node URL</label>
-              <input id="su" type="text" placeholder="http://ftp.server/s01e01.mkv" class="cyber-input w-full px-4 py-3 rounded-xl text-xs text-white">
+              <label class="text-[11px] font-semibold text-slate-400 block mb-2">Episode Stream URL</label>
+              <input id="su" type="text" placeholder="http://source-server.com/s01e01.mp4" class="prime-input w-full px-4 py-3 rounded-lg text-xs">
             </div>
-            <button class="w-full bg-gradient-to-r from-indigo-600 to-indigo-800 text-white text-xs font-bold py-4 rounded-xl transition mt-2 tracking-wider uppercase" onclick="addEp()"><i class="fa-solid fa-plus mr-2"></i> Commit Episode Node</button>
+            <button class="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-4 rounded-lg transition mt-2 uppercase tracking-wide" onclick="addEp()"><i class="fa-solid fa-plus mr-1.5"></i> Link Episode Stream</button>
           </div>
         </div>
       </div>
 
+      <!-- STREAM REPOSITORY FEEDS -->
       <div class="lg:col-span-7">
         <div id="ml-container" class="space-y-4">
-          <div id="ml" class="space-y-3.5"></div>
+          <div id="ml" class="space-y-4"></div>
         </div>
         <div id="sl-container" class="space-y-4 hidden">
-          <div id="sl" class="space-y-4"></div>
+          <div id="sl" class="space-y-5"></div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<div id="toast" class="fixed bottom-8 right-8 px-6 py-4 rounded-2xl text-xs font-bold shadow-2xl transform translate-y-32 opacity-0 transition-all duration-500 z-50 flex items-center gap-3 backdrop-blur-xl"></div>
+<!-- MINIMAL SLICK TOAST -->
+<div id="toast" class="fixed bottom-8 right-8 px-6 py-4 rounded-xl text-xs font-bold shadow-2xl transform translate-y-32 opacity-0 transition-all duration-300 z-50 flex items-center gap-3 backdrop-blur-md"></div>
 
 <script>
-// Apnar deya validated professional OMDb key runtime setup!
+// Static Token setup 
 var OMDB_API_KEY = 'deb30ab'; 
 
 var D = [];
@@ -233,7 +237,7 @@ function login(){
   fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:$('pw').value})})
   .then(function(r){
     if(r.ok){show();load();}
-    else $('lerr').style.display='flex';
+    else $('lerr').style.display='block';
   });
 }
 
@@ -245,7 +249,6 @@ function updateStats(mvCount, srCount) {
   $('count-series').textContent = srCount;
 }
 
-// Ultra-fast official OMDb Engine with Advanced Metadata extraction
 function fetchName(id, elementId, posterId, metaId) {
   if (nameCache[id]) {
     var cacheData = nameCache[id];
@@ -253,7 +256,6 @@ function fetchName(id, elementId, posterId, metaId) {
     if(el) el.textContent = cacheData.title;
     if(pEl && cacheData.poster !== 'N/A') pEl.src = cacheData.poster;
     if(mEl) mEl.textContent = cacheData.meta;
-    
     var parent = el.closest(currentTab === 'movie' ? '.movie-item' : '.series-item');
     if(parent) parent.setAttribute('data-name', cacheData.searchString);
     return;
@@ -265,15 +267,15 @@ function fetchName(id, elementId, posterId, metaId) {
       var el = $(elementId), pEl = $(posterId), mEl = $(metaId);
       if(data && data.Title) {
         var cleanTitle = data.Title + ' (' + data.Year + ')';
-        var rating = data.imdbRating !== 'N/A' ? '⭐ ' + data.imdbRating : '⭐ N/A';
-        var genre = data.Genre !== 'N/A' ? data.Genre : 'Unknown';
-        var metaText = rating + ' | ' + genre;
+        var rating = data.imdbRating !== 'N/A' ? '★ ' + data.imdbRating : '★ N/A';
+        var runtime = data.Runtime !== 'N/A' ? data.Runtime : '';
+        var metaText = rating + '  •  ' + data.Genre + '  •  ' + runtime;
         
         nameCache[id] = {
           title: cleanTitle,
           poster: data.Poster,
           meta: metaText,
-          searchString: (cleanTitle + ' ' + genre + ' ' + id).toLowerCase()
+          searchString: (cleanTitle + ' ' + data.Genre + ' ' + id).toLowerCase()
         };
 
         if(el) el.textContent = cleanTitle;
@@ -293,25 +295,25 @@ function fetchName(id, elementId, posterId, metaId) {
 
 function addMovie(){
   var id=xid($('mi').value),url=$('mu').value.trim(),u1=$('m1').value.trim(),u7=$('m7').value.trim();
-  if(!id||!url){toast('ভ্যালিড IMDB ID এবং স্ট্রিম লিঙ্ক ইনপুট দিন','e');return;}
+  if(!id||!url){toast('Valid credentials required','e');return;}
   var item={id:id,type:'movie',streamUrl:url};
   if(u1)item.streamUrl1080p=u1;
   if(u7)item.streamUrl720p=u7;
   post(item,function(d){
     D=d; render();
     $('mi').value=$('mu').value=$('m1').value=$('m7').value='';
-    toast('নতুন মুভি ক্লাস্টার সফলভাবে ইনজেক্ট করা হয়েছে! 🚀');
+    toast('Movie deployment asset mounted successfully.');
   });
 }
 
 function addEp(){
   var id=xid($('si').value),s=parseInt($('ss').value),e=parseInt($('se').value),url=$('su').value.trim();
-  if(!id||!url){toast('ভ্যালিড IMDB ID এবং এপিসোড লিঙ্ক দিন','e');return;}
+  if(!id||!url){toast('Invalid parameters entered','e');return;}
   var item={id:id,type:'series',episodes:[{season:s,episode:e,streamUrl:url}]};
   post(item,function(d){
     D=d; render();
     $('su').value=''; $('se').value=e+1;
-    toast('সিরিজ এপিসোড নোড সফলভাবে মাউন্ট করা হয়েছে! ⚡');
+    toast('Episode streaming index map successfully established.');
   });
 }
 
@@ -321,12 +323,12 @@ function post(item,cb){
 }
 
 function del(id){
-  if(!confirm('সাবধান! এই কন্টেন্ট ডেটা সম্পূর্ণ মুছে ফেলতে চান?')) return;
-  fetch('/api/movies/'+id,{method:'DELETE'}).then(function(r){return r.json();}).then(function(d){D=d.data;render();toast('ডাটাবেজ ক্লাস্টার ওয়াইপড! 🗑️','e');});
+  if(!confirm('Confirm complete operational erasure of this asset?')) return;
+  fetch('/api/movies/'+id,{method:'DELETE'}).then(function(r){return r.json();}).then(function(d){D=d.data;render();toast('Node terminated from catalog.','e');});
 }
 
 function delEp(id,s,e){
-  fetch('/api/movies/'+id+'/episodes/'+s+'/'+e,{method:'DELETE'}).then(function(r){return r.json();}).then(function(d){D=d.data;render();toast('এপিসোড নোড রিমুভড! 🛑','e');});
+  fetch('/api/movies/'+id+'/episodes/'+s+'/'+e,{method:'DELETE'}).then(function(r){return r.json();}).then(function(d){D=d.data;render();toast('Episode mapping severed.','e');});
 }
 
 function filterItems() {
@@ -351,31 +353,36 @@ function render(){
   updateStats(mv.length, sr.length);
 
   if(mv.length===0){
-    $('ml').innerHTML='<div class="cyber-card text-slate-500 text-center text-xs py-16 rounded-3xl border-dashed border-white/10"><i class="fa-solid fa-ban text-2xl mb-3 block text-purple-500/30"></i>NO MOVIE NODE RECOGNIZED IN DATABASE</div>';
+    $('ml').innerHTML='<div class="premium-card text-slate-500 text-center text-xs py-20 rounded-xl border-dashed border-white/5"><i class="fa-solid fa-folder-open text-xl mb-3 block text-slate-600"></i>No streams deployed within current cluster framework</div>';
   } else {
     $('ml').innerHTML=mv.map(function(m, index){
       var uniqueElId = 'movie-name-' + index;
       var uniquePostId = 'movie-poster-' + index;
       var uniqueMetaId = 'movie-meta-' + index;
-      var quals=[m.streamUrl1080p?'1080p':'',m.streamUrl720p?'720p':'',m.streamUrl?'Default':''].filter(Boolean).join(' / ');
+      var quals=[m.streamUrl1080p?'1080p':'',m.streamUrl720p?'720p':'',m.streamUrl?'Source':''].filter(Boolean).map(function(q){
+        return '<span class="bg-white/5 px-2 py-0.5 rounded text-[10px] text-slate-300 font-sans tracking-wide">'+q+'</span>';
+      }).join(' ');
       
-      setTimeout(function(){ fetchName(m.id, uniqueElId, uniquePostId, uniqueMetaId); }, 40 * index);
+      setTimeout(function(){ fetchName(m.id, uniqueElId, uniquePostId, uniqueMetaId); }, 35 * index);
 
-      return '<div class="movie-item cyber-card p-4 rounded-2xl flex items-center justify-between border border-white/5 transition-all duration-300" data-id="'+m.id+'" data-name="">' +
-             '<div class="flex items-center gap-3.5">' +
-             '  <img id="'+uniquePostId+'" src="https://images.unsplash.com/photo-1594909122845-11baa439b7bf?q=80&w=120" class="w-11 h-16 object-cover rounded-xl border border-white/10 shadow-md bg-purple-950/20" alt="">' +
-             '  <div>' +
-             '    <div class="text-xs font-bold font-mono text-white flex flex-wrap items-center gap-2"><span class="px-2 py-0.5 rounded-md text-[9px] font-black bg-purple-500/10 text-purple-400 border border-purple-500/20 tracking-widest uppercase">MOVIE</span><span id="'+uniqueElId+'" class="text-slate-200 font-sans font-bold text-sm">Syncing...</span> <span class="text-slate-500 text-[11px] font-normal font-mono">('+m.id+')</span></div>' +
-             '    <div id="'+uniqueMetaId+'" class="text-[11px] text-purple-400/80 mt-1 font-sans">Syncing metadata...</div>' +
-             '    <div class="text-[11px] text-slate-400 mt-1 font-mono"><i class="fa-solid fa-link text-[9px] text-purple-500/40 mr-1.5"></i>'+quals+'</div>' +
+      return '<div class="movie-item premium-card p-4 rounded-xl flex items-center justify-between border border-white/5" data-id="'+m.id+'" data-name="">' +
+             '<div class="flex items-center gap-4 w-full mr-4">' +
+             '  <img id="'+uniquePostId+'" src="https://images.unsplash.com/photo-1594909122845-11baa439b7bf?w=100" class="w-12 h-16 object-cover rounded shadow-md bg-slate-900" alt="">' +
+             '  <div class="space-y-1 truncate w-full">' +
+             '    <div class="flex items-center flex-wrap gap-2">' +
+             '      <span id="'+uniqueElId+'" class="text-white font-bold text-sm tracking-tight">Syncing catalog...</span>' +
+             '      <a href="https://www.imdb.com/title/'+m.id+'" target="_blank" class="text-[10px] font-mono text-slate-500 hover:text-blue-400 flex items-center gap-1 transition"><i class="fa-solid fa-arrow-up-right-from-square"></i> IMDb</a>' +
+             '    </div>' +
+             '    <div id="'+uniqueMetaId+'" class="text-xs text-slate-400 font-medium">Loading asset dimensions...</div>' +
+             '    <div class="flex items-center gap-2 pt-0.5">'+quals+'</div>' +
              '  </div>' +
              '</div>' +
-             '<button class="bg-rose-500/10 hover:bg-rose-600 text-rose-400 hover:text-white text-[11px] font-bold px-4 py-2 rounded-xl transition duration-200 flex items-center gap-1.5 self-center" onclick="del(\''+m.id+'\')"><i class="fa-solid fa-trash-arrow-up text-[10px]"></i> TERMINATE</button></div>';
+             '<button class="bg-rose-500/10 hover:bg-rose-600/20 border border-rose-500/10 text-rose-400 text-xs font-semibold px-4 py-2.5 rounded-lg transition duration-150 flex items-center gap-2 flex-shrink-0" onclick="del(\''+m.id+'\')"><i class="fa-solid fa-trash-can text-[11px]"></i> Delete</button></div>';
     }).join('');
   }
 
   if(sr.length===0){
-    $('sl').innerHTML='<div class="cyber-card text-slate-500 text-center text-xs py-16 rounded-3xl border-dashed border-white/10"><i class="fa-solid fa-ban text-2xl mb-3 block text-indigo-500/30"></i>NO TV-SERIES CLUSTER FOUND IN DATABASE</div>';
+    $('sl').innerHTML='<div class="premium-card text-slate-500 text-center text-xs py-20 rounded-xl border-dashed border-white/5"><i class="fa-solid fa-folder-open text-xl mb-3 block text-slate-600"></i>No series elements currently parsed inside repository</div>';
   } else {
     $('sl').innerHTML=sr.map(function(s, index){
       var uniqueElId = 'series-name-' + index;
@@ -383,26 +390,29 @@ function render(){
       var uniqueMetaId = 'series-meta-' + index;
       var eps=(s.episodes||[]).map(function(e){
         var sn=String(e.season).padStart(2,'0'),en=String(e.episode).padStart(2,'0');
-        return '<div class="flex items-center justify-between bg-black/40 border border-white/5 rounded-xl px-4 py-2.5 text-xs text-slate-300 hover:border-indigo-500/20 transition duration-150">' +
-               '<span class="font-mono text-indigo-400 font-bold tracking-wider">S'+sn+'E'+en+'</span>' +
-               '<span class="text-[11px] text-slate-400 truncate max-w-[200px] sm:max-w-[320px] font-mono px-4 select-all">'+e.streamUrl+'</span>' +
-               '<button class="text-slate-500 hover:text-rose-400 p-1 rounded transition" onclick="delEp(\''+s.id+'\','+e.season+','+e.episode+')"><i class="fa-solid fa-xmark text-sm"></i></button></div>';
+        return '<div class="flex items-center justify-between bg-white/[0.02] border border-white/5 rounded-lg px-4 py-3 text-xs text-slate-300 hover:bg-white/[0.04] transition">' +
+               '<span class="font-mono text-blue-400 font-semibold tracking-wider bg-blue-500/5 px-2 py-0.5 rounded border border-blue-500/10">S'+sn+'E'+en+'</span>' +
+               '<span class="text-[11px] text-slate-400 truncate px-4 font-mono select-all flex-1 text-left">'+e.streamUrl+'</span>' +
+               '<button class="text-slate-500 hover:text-rose-400 p-1 transition" onclick="delEp(\''+s.id+'\','+e.season+','+e.episode+')"><i class="fa-solid fa-xmark text-sm"></i></button></div>';
       }).join('');
       
-      setTimeout(function(){ fetchName(s.id, uniqueElId, uniquePostId, uniqueMetaId); }, 40 * index);
+      setTimeout(function(){ fetchName(s.id, uniqueElId, uniquePostId, uniqueMetaId); }, 35 * index);
 
-      return '<div class="series-item cyber-card p-5 rounded-2xl border border-white/5" data-id="'+s.id+'" data-name="">' +
+      return '<div class="series-item premium-card p-5 rounded-xl border border-white/5" data-id="'+s.id+'" data-name="">' +
              '<div class="flex justify-between items-center pb-4 border-b border-white/5 mb-4">' +
-             '  <div class="flex items-center gap-3.5">' +
-             '    <img id="'+uniquePostId+'" src="https://images.unsplash.com/photo-1594909122845-11baa439b7bf?q=80&w=120" class="w-11 h-16 object-cover rounded-xl border border-white/10 shadow-md bg-indigo-950/20" alt="">' +
-             '    <div>' +
-             '      <div class="text-xs font-bold font-mono text-white flex flex-wrap items-center gap-2"><span class="px-2 py-0.5 rounded-md text-[9px] font-black bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 tracking-widest uppercase">SERIES</span><span id="'+uniqueElId+'" class="text-slate-200 font-sans font-bold text-sm">Syncing...</span> <span class="text-slate-500 text-[11px] font-normal font-mono">('+s.id+')</span></div>' +
-             '      <div id="'+uniqueMetaId+'" class="text-[11px] text-indigo-400/80 mt-1 font-sans">Syncing metadata...</div>' +
+             '  <div class="flex items-center gap-4">' +
+             '    <img id="'+uniquePostId+'" src="https://images.unsplash.com/photo-1594909122845-11baa439b7bf?w=100" class="w-12 h-16 object-cover rounded shadow-md bg-slate-900" alt="">' +
+             '    <div class="space-y-0.5">' +
+             '      <div class="flex items-center flex-wrap gap-2">' +
+             '         <span id="'+uniqueElId+'" class="text-white font-bold text-sm tracking-tight">Syncing catalog...</span>' +
+             '         <a href="https://www.imdb.com/title/'+s.id+'" target="_blank" class="text-[10px] font-mono text-slate-500 hover:text-blue-400 flex items-center gap-1 transition"><i class="fa-solid fa-arrow-up-right-from-square"></i> IMDb</a>' +
+             '      </div>' +
+             '      <div id="'+uniqueMetaId+'" class="text-xs text-slate-400 font-medium">Loading specifications...</div>' +
              '    </div>' +
              '  </div>' +
-             '  <button class="bg-rose-500/10 hover:bg-rose-600 text-rose-400 hover:text-white text-[10px] font-bold px-3 py-1.5 rounded-lg transition flex items-center gap-1.5" onclick="del(\''+s.id+'\')"><i class="fa-solid fa-dumpster"></i> PURGE ALL</button>' +
+             '  <button class="bg-rose-500/5 hover:bg-rose-600/20 border border-rose-500/10 text-rose-400 text-xs font-semibold px-3 py-2 rounded-lg transition" onclick="del(\''+s.id+'\')"><i class="fa-solid fa-trash-can mr-1"></i> Wipe Series</button>' +
              '</div>' +
-             '<div class="space-y-2 max-h-56 overflow-y-auto pr-1">' + eps + '</div></div>';
+             '<div class="space-y-2 max-h-60 overflow-y-auto pr-1">' + eps + '</div></div>';
     }).join('');
   }
 }
@@ -415,23 +425,23 @@ function sw(t){
   $('ml-container').style.display=t==='movie'?'block':'none';
   $('sl-container').style.display=t==='series'?'block':'none';
 
-  $('tm').className='px-6 py-2.5 text-xs font-bold tracking-wider rounded-xl transition-all duration-300 '+(t==='movie'?'bg-purple-600 text-white neon-glow-purple':'text-slate-400 hover:bg-white/5');
-  $('ts').className='px-6 py-2.5 text-xs font-bold tracking-wider rounded-xl transition-all duration-300 '+(t==='series'?'bg-indigo-600 text-white neon-glow-indigo':'text-slate-400 hover:bg-white/5');
+  $('tm').className='text-sm font-bold pb-3 relative transition-all border-b-2 '+(t==='movie'?'border-[#e50914] text-white':'border-transparent text-slate-400 hover:text-white');
+  $('ts').className='text-sm font-bold pb-3 relative transition-all border-b-2 '+(t==='series'?'border-[#e50914] text-white':'border-transparent text-slate-400 hover:text-white');
   filterItems();
 }
 
 function cp(){
   navigator.clipboard.writeText(BASE+'/manifest.json').then(function(){
-    toast('Manifest Engine Endpoint Copied Securely! 📡');
+    toast('Streaming core manifest endpoint link extracted safely.');
   });
 }
 
 function toast(msg,type){
   var t=$('toast'); 
-  t.innerHTML = type === 'e' ? '<i class="fa-solid fa-triangle-exclamation text-rose-400 text-sm"></i> '+msg : '<i class="fa-solid fa-circle-check text-emerald-400 text-sm"></i> '+msg;
-  t.style.background = type === 'e' ? 'rgba(28, 12, 18, 0.95)' : 'rgba(10, 25, 18, 0.95)';
-  t.style.border = type === 'e' ? '1px solid rgba(244, 63, 94, 0.2)' : '1px solid rgba(16, 185, 129, 0.2)';
-  t.style.color = type === 'e' ? '#fecdd3' : '#d1fae5';
+  t.innerHTML = type === 'e' ? '<i class="fa-solid fa-circle-exclamation text-rose-500 text-sm"></i> '+msg : '<i class="fa-solid fa-circle-check text-emerald-500 text-sm"></i> '+msg;
+  t.style.background = '#14161f';
+  t.style.border = type === 'e' ? '1px solid rgba(244, 63, 94, 0.15)' : '1px solid rgba(16, 185, 129, 0.15)';
+  t.style.color = type === 'e' ? '#fecdd3' : '#e2e8f0';
   
   t.classList.remove('translate-y-32', 'opacity-0');
   t.classList.add('translate-y-0', 'opacity-100');
@@ -439,7 +449,7 @@ function toast(msg,type){
   setTimeout(function(){
     t.classList.remove('translate-y-0', 'opacity-100');
     t.classList.add('translate-y-32', 'opacity-0');
-  }, 3500);
+  }, 3200);
 }
 
 init();
