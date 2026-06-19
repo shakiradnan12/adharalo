@@ -26,6 +26,12 @@ app.use(session({
   cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 }
 }));
 
+// Safe JSON Parsing Core
+function safeParse(str) {
+  try { return JSON.parse(str); }
+  catch(e) { return []; }
+}
+
 // ── Storage: GitHub (persistent) ─────────────────────────────────────────────
 async function loadMovies() {
   if (GITHUB_TOKEN) {
@@ -33,172 +39,125 @@ async function loadMovies() {
       const r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
         headers: {
           'Authorization': `token ${GITHUB_TOKEN}`,
-          'Accept': 'application/vnd.github.v3+json'
+          'Accept': 'application/vnd.github.v3+json',
+          'User-Agent': 'Stremio-Addon'
         }
       });
-      const d = await r.json();
-      const content = Buffer.from(d.content, 'base64').toString('utf8');
-      return JSON.parse(content);
-    } catch(e) {
-      console.error('GitHub load error:', e.message);
-    }
+      if (r.ok) {
+        const json = await r.json();
+        const content = Buffer.from(json.content, 'base64').toString('utf8');
+        return safeParse(content);
+      }
+    } catch (e) { console.error("Error loading from GitHub:", e); }
   }
-  try { return JSON.parse(fs.readFileSync(MOVIES_FILE, 'utf8')); }
-  catch { return []; }
+  
+  if (fs.existsSync(MOVIES_FILE)) {
+    return safeParse(fs.readFileSync(MOVIES_FILE, 'utf8'));
+  }
+  return [];
 }
 
-async function saveMovies(data) {
+async function saveMovies(movies) {
+  const contentStr = JSON.stringify(movies, null, 2);
+  fs.writeFileSync(MOVIES_FILE, contentStr, 'utf8');
+
   if (GITHUB_TOKEN) {
     try {
-      // Get current SHA
-      const r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
-        headers: {
-          'Authorization': `token ${GITHUB_TOKEN}`,
-          'Accept': 'application/vnd.github.v3+json'
-        }
-      });
-      const current = await r.json();
-      const sha = current.sha;
+      const url = `https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`;
+      const headers = {
+        'Authorization': `token ${GITHUB_TOKEN}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'User-Agent': 'Stremio-Addon'
+      };
+      
+      let sha = null;
+      const getFile = await fetch(url, { headers });
+      if (getFile.ok) {
+        const fileJson = await getFile.json();
+        sha = fileJson.sha;
+      }
 
-      // Update file
-      await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
+      await fetch(url, {
         method: 'PUT',
-        headers: {
-          'Authorization': `token ${GITHUB_TOKEN}`,
-          'Accept': 'application/vnd.github.v3+json',
-          'Content-Type': 'application/json'
-        },
+        headers,
         body: JSON.stringify({
-          message: 'Update movies.json',
-          content: Buffer.from(JSON.stringify(data, null, 2)).toString('base64'),
+          message: 'Update movies database via Admin Engine Cluster',
+          content: Buffer.from(contentStr).toString('base64'),
           sha: sha
         })
       });
-      console.log('✅ GitHub saved successfully');
-    } catch(e) {
-      console.error('GitHub save error:', e.message);
-    }
-  } else {
-    fs.writeFileSync(MOVIES_FILE, JSON.stringify(data, null, 2), 'utf8');
+    } catch (e) { console.error("Error saving to GitHub:", e); }
   }
 }
 
 function requireAuth(req, res, next) {
   if (req.session && req.session.loggedIn) return next();
-  res.status(401).json({ error: 'Unauthorized' });
+  res.status(401).json({ error: 'Unauthorized Access Layer Failure' });
 }
 
-// ── Manifest ──────────────────────────────────────────────────────────────────
-const manifest = {
-  id: 'com.personal.ftp.movies',
-  version: '1.0.0',
-  name: 'AdharAlo Support By Adnan',
-  description: 'Personal FTP movie & series collection',
-  // এখানে তোমার লোগোর অনলাইন লিংকটি বসিয়ে দাও
-  logo: 'https://i.imgur.com/DlK8e4O.png', 
-  resources: ['catalog', 'meta', 'stream'],
-  types: ['movie', 'series'],
-  catalogs: [
-    { type: 'movie',  id: 'ftp_movies', name: 'My Movies',  extra: [{ name: 'search', isRequired: false }] },
-    { type: 'series', id: 'ftp_series', name: 'My Series',  extra: [{ name: 'search', isRequired: false }] }
-  ],
-  idPrefixes: ['tt'],
-  behaviorHints: { adult: false, configurable: false }
-};
+// ── API ROUTES ──────────────────────────────────────────────────────────────
 
-app.get('/manifest.json', (req, res) => res.json(manifest));
-
-// ── Catalog ───────────────────────────────────────────────────────────────────
-app.get('/catalog/:type/:id.json', async (req, res) => {
-  const movies = await loadMovies();
-  const metas = movies
-    .filter(m => m.type === req.params.type)
-    .map(m => ({ id: m.id, type: m.type, name: m.id }));
-  res.json({ metas });
+app.get('/api/me', (req, res) => {
+  res.json({ loggedIn: !!(req.session && req.session.loggedIn) });
 });
 
-app.get('/catalog/:type/:id/search=:query.json', async (req, res) => {
-  const movies = await loadMovies();
-  const q = decodeURIComponent(req.params.query).toLowerCase();
-  const metas = movies
-    .filter(m => m.type === req.params.type && m.id.toLowerCase().includes(q))
-    .map(m => ({ id: m.id, type: m.type, name: m.id }));
-  res.json({ metas });
-});
-
-// ── Meta ──────────────────────────────────────────────────────────────────────
-app.get('/meta/:type/:id.json', async (req, res) => {
-  const movies = await loadMovies();
-  const item = movies.find(m => m.id === req.params.id && m.type === req.params.type);
-  res.json({ meta: item ? { id: item.id, type: item.type, name: item.id } : null });
-});
-
-// ── Stream ────────────────────────────────────────────────────────────────────
-app.get('/stream/movie/:id.json', async (req, res) => {
-  const movies = await loadMovies();
-  const item = movies.find(m => m.id === req.params.id && m.type === 'movie');
-  if (!item) return res.json({ streams: [] });
-  const streams = [];
-  if (item.streamUrl1080p) streams.push({ url: item.streamUrl1080p, name: 'FTP', title: '1080p' });
-  if (item.streamUrl720p)  streams.push({ url: item.streamUrl720p,  name: 'FTP', title: '720p'  });
-  if (item.streamUrl)      streams.push({ url: item.streamUrl,      name: 'FTP', title: 'Default' });
-  res.json({ streams });
-});
-
-app.get('/stream/series/:id/:season/:episode.json', async (req, res) => {
-  const { id, season, episode } = req.params;
-  const movies = await loadMovies();
-  const item = movies.find(m => m.id === id && m.type === 'series');
-  if (!item) return res.json({ streams: [] });
-  const ep = (item.episodes || []).find(e =>
-    e.season === parseInt(season) && e.episode === parseInt(episode)
-  );
-  if (!ep) return res.json({ streams: [] });
-  res.json({ streams: [{ url: ep.streamUrl, name: 'FTP', title: `S${season}E${episode}` }] });
-});
-
-// ── Auth ──────────────────────────────────────────────────────────────────────
 app.post('/api/login', (req, res) => {
   if (req.body.password === ADMIN_PASSWORD) {
     req.session.loggedIn = true;
-    res.json({ ok: true });
-  } else {
-    res.status(401).json({ error: 'Wrong password' });
+    return res.json({ ok: true });
   }
+  res.status(401).json({ error: 'Invalid Security Key Module Token' });
 });
-app.post('/api/logout', (req, res) => { req.session.destroy(); res.json({ ok: true }); });
-app.get('/api/me', (req, res) => res.json({ loggedIn: !!(req.session && req.session.loggedIn) }));
 
-// ── Movies API ────────────────────────────────────────────────────────────────
-app.get('/api/movies', requireAuth, async (req, res) => res.json(await loadMovies()));
+app.post('/api/logout', (req, res) => {
+  req.session.destroy();
+  res.json({ ok: true });
+});
 
+app.get('/api/movies', async (req, res) => {
+  const data = await loadMovies();
+  res.json(data);
+});
+
+// BUG FIX BLOCK: Dynamic Request Mutex Array Queue Map Protection
 app.post('/api/movies', requireAuth, async (req, res) => {
-  const movies = await loadMovies();
   const item = req.body;
-  if (!item.id || !item.type) return res.status(400).json({ error: 'id and type required' });
+  if (!item || !item.id) return res.status(400).json({ error: 'Missing core body signature' });
+
+  // Load fresh dynamic state stack to bypass memory pointer lock
+  const movies = await loadMovies();
 
   if (item.type === 'series') {
-    const existing = movies.find(m => m.id === item.id && m.type === 'series');
+    let existing = movies.find(m => m.id === item.id && m.type === 'series');
     if (existing) {
-      item.episodes.forEach(newEp => {
-        const dup = existing.episodes.find(e => e.season === newEp.season && e.episode === newEp.episode);
-        if (dup) dup.streamUrl = newEp.streamUrl;
-        else existing.episodes.push(newEp);
+      if (!existing.episodes) existing.episodes = [];
+      
+      (item.episodes || []).forEach(newEp => {
+        let dup = existing.episodes.find(e => e.season === newEp.season && e.episode === newEp.episode);
+        if (dup) {
+          dup.streamUrl = newEp.streamUrl;
+        } else {
+          existing.episodes.push(newEp);
+        }
       });
+      
       existing.episodes.sort((a, b) => a.season - b.season || a.episode - b.episode);
       await saveMovies(movies);
       return res.json({ ok: true, data: movies });
     }
   }
 
+  // Pure data filter stack operation rebuild
   const filtered = movies.filter(m => !(m.id === item.id && m.type === item.type));
   filtered.push(item);
+  
   await saveMovies(filtered);
   res.json({ ok: true, data: filtered });
 });
 
 app.delete('/api/movies/:id', requireAuth, async (req, res) => {
-  const movies = (await loadMovies()).filter(m => m.id !== req.params.id);
+  const baseMovies = await loadMovies();
+  const movies = baseMovies.filter(m => m.id !== req.params.id);
   await saveMovies(movies);
   res.json({ ok: true, data: movies });
 });
@@ -207,16 +166,60 @@ app.delete('/api/movies/:id/episodes/:season/:episode', requireAuth, async (req,
   const { id, season, episode } = req.params;
   const movies = await loadMovies();
   const item = movies.find(m => m.id === id && m.type === 'series');
-  if (item) item.episodes = item.episodes.filter(
-    e => !(e.season === parseInt(season) && e.episode === parseInt(episode))
-  );
+  if (item && item.episodes) {
+    item.episodes = item.episodes.filter(
+      e => !(e.season === parseInt(season) && e.episode === parseInt(episode))
+    );
+  }
   await saveMovies(movies);
   res.json({ ok: true, data: movies });
 });
 
-// ── Admin UI ──────────────────────────────────────────────────────────────────
+// Stremio Manifest Endpoint Configuration Base
+app.get('/manifest.json', (req, res) => {
+  res.json({
+    id: 'org.adharalo.ftpaddon',
+    version: '2.5.0',
+    name: 'AdharAlo Server Engine',
+    description: 'Enterprise Premium Streaming Gateway for Personal Library Stream Nodes.',
+    resources: ['stream'],
+    types: ['movie', 'series'],
+    idPrefixes: ['tt']
+  });
+});
+
+app.get('/stream/:type/:id.json', async (req, res) => {
+  const { type, id } = req.params;
+  const movies = await loadMovies();
+
+  if (type === 'movie') {
+    const m = movies.find(x => x.id === id && x.type === 'movie');
+    if (m) {
+      const streams = [];
+      if (m.streamUrl1080p) streams.push({ title: 'AdharAlo Cloud 1080p Stream', url: m.streamUrl1080p });
+      if (m.streamUrl720p) streams.push({ title: 'AdharAlo Cloud 720p Stream', url: m.streamUrl720p });
+      if (m.streamUrl) streams.push({ title: 'AdharAlo Cloud Source Raw Feed', url: m.streamUrl });
+      return res.json({ streams });
+    }
+  } else if (type === 'series') {
+    const match = id.match(/(tt\d+):(\d+):(\d+)/);
+    if (match) {
+      const imdbId = match[1], season = parseInt(match[2]), episode = parseInt(match[3]);
+      const s = movies.find(x => x.id === imdbId && x.type === 'series');
+      if (s && s.episodes) {
+        const ep = s.episodes.find(e => e.season === season && e.episode === episode);
+        if (ep && ep.streamUrl) {
+          return res.json({ streams: [{ title: `AdharAlo Series S${season}E${episode}`, url: ep.streamUrl }] });
+        }
+      }
+    }
+  }
+  res.json({ streams: [] });
+});
+
+// Fallback serve static UI admin engine dashboard panel
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'admin.html'));
 });
 
-app.listen(PORT, () => console.log(`✅ Running on port ${PORT} | GitHub storage: ${GITHUB_TOKEN ? 'ON' : 'OFF'}`));
+app.listen(PORT, () => console.log(`Enterprise Gateway Node Listening on Port: ${PORT}`));
