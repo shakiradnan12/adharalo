@@ -7,14 +7,13 @@ const fetch = require('node-fetch');
 
 const app = express();
 const PORT = process.env.PORT || 7000;
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Stremio@2025!';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'adnan123';
 const SESSION_SECRET = process.env.SESSION_SECRET || 'xK9mP2vL7qR4nW8z';
 
-// JSONBin config - persistent storage
-const JSONBIN_ID = process.env.JSONBIN_ID || '';
-const JSONBIN_KEY = process.env.JSONBIN_KEY || '';
-const USE_JSONBIN = JSONBIN_ID && JSONBIN_KEY;
-
+// GitHub config
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN || '';
+const GITHUB_REPO = process.env.GITHUB_REPO || 'shakiradnan12/adharalo';
+const GITHUB_FILE = 'movies.json';
 const MOVIES_FILE = path.join(__dirname, 'movies.json');
 
 app.use(cors());
@@ -27,18 +26,21 @@ app.use(session({
   cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 }
 }));
 
-// ── Storage: JSONBin (persistent) or local file ───────────────────────────────
+// ── Storage: GitHub (persistent) ─────────────────────────────────────────────
 async function loadMovies() {
-  if (USE_JSONBIN) {
+  if (GITHUB_TOKEN) {
     try {
-      const r = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_ID}/latest`, {
-        headers: { 'X-Master-Key': JSONBIN_KEY }
+      const r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
+        headers: {
+          'Authorization': `token ${GITHUB_TOKEN}`,
+          'Accept': 'application/vnd.github.v3+json'
+        }
       });
       const d = await r.json();
-      return d.record || [];
+      const content = Buffer.from(d.content, 'base64').toString('utf8');
+      return JSON.parse(content);
     } catch(e) {
-      console.error('JSONBin load error:', e.message);
-      return [];
+      console.error('GitHub load error:', e.message);
     }
   }
   try { return JSON.parse(fs.readFileSync(MOVIES_FILE, 'utf8')); }
@@ -46,15 +48,35 @@ async function loadMovies() {
 }
 
 async function saveMovies(data) {
-  if (USE_JSONBIN) {
+  if (GITHUB_TOKEN) {
     try {
-      await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_ID}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_KEY },
-        body: JSON.stringify(data)
+      // Get current SHA
+      const r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
+        headers: {
+          'Authorization': `token ${GITHUB_TOKEN}`,
+          'Accept': 'application/vnd.github.v3+json'
+        }
       });
+      const current = await r.json();
+      const sha = current.sha;
+
+      // Update file
+      await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `token ${GITHUB_TOKEN}`,
+          'Accept': 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: 'Update movies.json',
+          content: Buffer.from(JSON.stringify(data, null, 2)).toString('base64'),
+          sha: sha
+        })
+      });
+      console.log('✅ GitHub saved successfully');
     } catch(e) {
-      console.error('JSONBin save error:', e.message);
+      console.error('GitHub save error:', e.message);
     }
   } else {
     fs.writeFileSync(MOVIES_FILE, JSON.stringify(data, null, 2), 'utf8');
@@ -190,9 +212,9 @@ app.delete('/api/movies/:id/episodes/:season/:episode', requireAuth, async (req,
   res.json({ ok: true, data: movies });
 });
 
-// ── Admin UI (serve from file) ────────────────────────────────────────────────
+// ── Admin UI ──────────────────────────────────────────────────────────────────
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'admin.html'));
 });
 
-app.listen(PORT, () => console.log(`✅ Running on port ${PORT} | JSONBin: ${USE_JSONBIN ? 'ON' : 'OFF (local file)'}`));
+app.listen(PORT, () => console.log(`✅ Running on port ${PORT} | GitHub storage: ${GITHUB_TOKEN ? 'ON' : 'OFF'}`));
