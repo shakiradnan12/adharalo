@@ -95,7 +95,7 @@ const manifest = {
   name: 'AdharAlo Support By Adnan',
   description: 'Personal FTP movie & series collection',
   // এখানে তোমার লোগোর অনলাইন লিংকটি বসিয়ে দাও
-  logo: 'https://imgur.com/DlK8e4O', 
+  logo: 'https://i.imgur.com/DlK8e4O.png', 
   resources: ['catalog', 'meta', 'stream'],
   types: ['movie', 'series'],
   catalogs: [
