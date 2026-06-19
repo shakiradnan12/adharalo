@@ -94,5 +94,16 @@
     "id": "tt34915705",
     "type": "movie",
     "streamUrl": "http://ftp.adharalo.com/New_Movies/South%20Iindian%20Hindi%20%20Dubbed/2025/Tourist%20Family%20%282025%29/Tourist%20Family%20%282025%29%20Proper%20%20HDR%20-%20720p%20-%20x264%20-%20%5BHin%20%2B%20Mal%20%2B%20Kan%5D%20-%20%28DD%2B5.1%20-%20192Kbps%29%20-%201.6GB%20-%20ESub.mp4"
+  },
+  {
+    "id": "tt1190634",
+    "type": "series",
+    "episodes": [
+      {
+        "season": 5,
+        "episode": 1,
+        "streamUrl": "http://ftp.adharalo.com/Series_1950-2023/English/2019/The%20Boys/s05/MovieLinkBD.com%20-%20The.Boys.S05E01.720p.Dual%5BHindi-English%5D.EAC3.WEB-DL.h264.ESub.mp4"
+      }
+    ]
   }
 ]
