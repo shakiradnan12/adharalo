@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AdharAlo Control Center v5.9</title>
+<title>AdharAlo Control Center v6.0</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -19,7 +19,7 @@
   .premium-card {
     background: #0d0f14;
     border: 1px solid rgba(255, 255, 255, 0.03);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.6);
   }
   .compact-asset-card {
     background: #0e1117;
@@ -46,78 +46,78 @@
     background: #151924;
     outline: none;
   }
-  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar { width: 5px; }
   ::-webkit-scrollbar-track { background: #07080a; }
   ::-webkit-scrollbar-thumb { background: #1a1e29; border-radius: 4px; }
   ::-webkit-scrollbar-thumb:hover { background: #e50914; }
 </style>
 </head>
-<body class="min-h-screen text-xs">
+<body class="min-h-screen text-sm">
 
 <!-- PREMIUM AUTH OVERLAY -->
 <div id="lov" class="fixed inset-0 flex items-center justify-center z-50 px-4 bg-[#07080a]/98 backdrop-blur-md">
   <div class="premium-card p-10 rounded-xl w-full max-w-sm">
     <div class="text-center mb-6">
       <h2 class="text-2xl font-extrabold tracking-tight text-white mb-0.5">ADHARALO<span class="text-[#e50914]">.</span></h2>
-      <p class="text-[9px] text-slate-500 uppercase tracking-widest font-semibold">Cinema Server Administration</p>
+      <p class="text-[10px] text-slate-500 uppercase tracking-widest font-semibold">Cinema Server Administration</p>
     </div>
-    <input id="pw" type="password" placeholder="Security Access Token Key" class="prime-input w-full px-4 py-3 rounded-lg font-mono text-center mb-4 text-xs outline-none" onkeydown="if(event.key==='Enter')login()">
-    <button class="w-full netflix-btn-primary text-[10px] tracking-wider font-bold py-3.5 rounded-lg shadow-md uppercase" onclick="login()">Authenticate Database</button>
-    <p id="lerr" class="text-rose-500 text-[10px] mt-3 hidden text-center font-medium"><i class="fa-solid fa-circle-exclamation mr-1"></i> Key Error.</p>
+    <input id="pw" type="password" placeholder="Security Access Token Key" class="prime-input w-full px-4 py-3 rounded-lg font-mono text-center mb-4 text-sm outline-none" onkeydown="if(event.key==='Enter')login()">
+    <button class="w-full netflix-btn-primary text-xs tracking-wider font-bold py-3.5 rounded-lg shadow-md uppercase" onclick="login()">Authenticate Database</button>
+    <p id="lerr" class="text-rose-500 text-xs mt-3 hidden text-center font-medium"><i class="fa-solid fa-circle-exclamation mr-1"></i> Key Error.</p>
   </div>
 </div>
 
 <!-- MAIN LAYOUT PIPELINE -->
 <div id="app" class="hidden min-h-screen pb-16">
-  <!-- Small Brand Header -->
-  <nav class="sticky top-0 z-40 px-6 py-3.5 flex items-center justify-between border-b border-white/5 bg-[#07080a]/90 backdrop-blur-md">
+  <!-- Brand Header -->
+  <nav class="sticky top-0 z-40 px-6 py-4 flex items-center justify-between border-b border-white/5 bg-[#07080a]/90 backdrop-blur-md">
     <div class="flex items-center gap-4">
-      <span class="font-extrabold text-lg tracking-tighter text-white">ADHARALO<span class="text-[#e50914]">PRO</span></span>
-      <div class="hidden sm:flex items-center gap-1.5 text-[10px] font-medium text-emerald-400 bg-emerald-500/5 px-2.5 py-1 rounded-md border border-emerald-500/10">
-        <span class="w-1 h-1 rounded-full bg-emerald-500 animate-pulse"></span> Stream Node Core: Live
+      <span class="font-extrabold text-xl tracking-tighter text-white">ADHARALO<span class="text-[#e50914]">PRO</span></span>
+      <div class="hidden sm:flex items-center gap-2 text-xs font-medium text-emerald-400 bg-emerald-500/5 px-3 py-1 rounded-md border border-emerald-500/10">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Stream Node Core: Live
       </div>
     </div>
     <div class="flex items-center gap-3">
-      <a id="install-link" href="#" class="bg-white/5 hover:bg-white/10 text-white text-[11px] font-semibold px-3 py-1.5 rounded border border-white/10 transition-all"><i class="fa-solid fa-clapperboard mr-1 text-[10px]"></i> Stremio Client</a>
-      <button class="bg-white/5 hover:bg-rose-500/20 text-slate-400 hover:text-rose-400 p-2 rounded transition-all" onclick="logout()"><i class="fa-solid fa-right-from-bracket text-xs"></i></button>
+      <a id="install-link" href="#" class="bg-white/5 hover:bg-white/10 text-white text-xs font-semibold px-4 py-2 rounded border border-white/10 transition-all"><i class="fa-solid fa-clapperboard mr-1.5"></i> Stremio Client</a>
+      <button class="bg-white/5 hover:bg-rose-500/20 text-slate-400 hover:text-rose-400 p-2.5 rounded transition-all" onclick="logout()"><i class="fa-solid fa-right-from-bracket text-sm"></i></button>
     </div>
   </nav>
 
   <div class="max-w-6xl mx-auto px-4 mt-6">
     <!-- MINI API LINK ENDPOINT BAR -->
-    <div class="premium-card px-4 py-3 rounded-xl flex items-center justify-between gap-4 mb-5 text-[11px]">
+    <div class="premium-card px-4 py-3.5 rounded-xl flex items-center justify-between gap-4 mb-5 text-sm">
       <div class="flex items-center gap-3 min-w-0">
         <i class="fa-solid fa-server text-slate-500 flex-shrink-0"></i>
         <div class="truncate font-mono text-slate-400 select-all" id="manifest-url">CONNECTING FEED INTERFACE...</div>
       </div>
-      <button class="bg-white hover:bg-slate-200 text-black text-[10px] font-bold px-3 py-1.5 rounded transition flex-shrink-0" onclick="cp()"><i class="fa-regular fa-copy mr-1"></i> Copy Endpoint</button>
+      <button class="bg-white hover:bg-slate-200 text-black text-xs font-bold px-3.5 py-2 rounded transition flex-shrink-0" onclick="cp()"><i class="fa-regular fa-copy mr-1"></i> Copy Endpoint</button>
     </div>
 
-    <!-- MINIMAL STATS METRIC GRID -->
+    <!-- STATS METRIC GRID -->
     <div class="grid grid-cols-3 gap-4 mb-6 text-center">
-      <div class="premium-card py-3 px-2 rounded-xl">
-        <div class="text-[10px] font-medium tracking-wide text-slate-500 uppercase">Movies</div>
-        <div class="text-xl font-black mt-0.5 text-white" id="count-movies">0</div>
+      <div class="premium-card py-4 px-2 rounded-xl">
+        <div class="text-xs font-medium tracking-wide text-slate-500 uppercase">Movies</div>
+        <div class="text-2xl font-black mt-0.5 text-white" id="count-movies">0</div>
       </div>
-      <div class="premium-card py-3 px-2 rounded-xl">
-        <div class="text-[10px] font-medium tracking-wide text-slate-500 uppercase">TV Series</div>
-        <div class="text-xl font-black mt-0.5 text-white" id="count-series">0</div>
+      <div class="premium-card py-4 px-2 rounded-xl">
+        <div class="text-xs font-medium tracking-wide text-slate-500 uppercase">TV Series</div>
+        <div class="text-2xl font-black mt-0.5 text-white" id="count-series">0</div>
       </div>
-      <div class="premium-card py-3 px-2 rounded-xl flex flex-col justify-center items-center">
-        <div class="text-[10px] font-medium tracking-wide text-slate-500 uppercase">OMDb Layer</div>
-        <div class="text-[10px] font-bold mt-1 text-emerald-400 flex items-center gap-1"><i class="fa-solid fa-shield-halved text-[9px]"></i> Active Engine</div>
+      <div class="premium-card py-4 px-2 rounded-xl flex flex-col justify-center items-center">
+        <div class="text-xs font-medium tracking-wide text-slate-500 uppercase">OMDb Layer</div>
+        <div class="text-xs font-bold mt-1 text-emerald-400 flex items-center gap-1"><i class="fa-solid fa-shield-halved text-xs"></i> Active Engine</div>
       </div>
     </div>
 
     <!-- TABBED COMPOSITIONS AND LIVE STREAM LOCATOR FILTER -->
     <div class="flex items-center justify-between gap-4 mb-5 border-b border-white/5 pb-2">
-      <div class="flex gap-4">
-        <button class="text-xs font-bold pb-2 relative transition-all border-b-2" id="tm" onclick="sw('movie')">Movies System</button>
-        <button class="text-xs font-bold pb-2 relative transition-all border-b-2" id="ts" onclick="sw('series')">TV Series Cluster</button>
+      <div class="flex gap-6">
+        <button class="text-sm font-bold pb-2 relative transition-all border-b-2" id="tm" onclick="sw('movie')">Movies System</button>
+        <button class="text-sm font-bold pb-2 relative transition-all border-b-2" id="ts" onclick="sw('series')">TV Series Cluster</button>
       </div>
-      <div class="relative w-full max-w-[180px]">
-        <span class="absolute left-3 top-2 text-slate-500 text-[10px]"><i class="fa-solid fa-magnifying-glass"></i></span>
-        <input id="q-search" type="text" placeholder="Quick filter matrix..." class="prime-input w-full pl-8 pr-3 py-1.5 rounded text-[11px]" oninput="filterItems()">
+      <div class="relative w-full max-w-[220px]">
+        <span class="absolute left-3 top-2.5 text-slate-500 text-xs"><i class="fa-solid fa-magnifying-glass"></i></span>
+        <input id="q-search" type="text" placeholder="Quick filter matrix..." class="prime-input w-full pl-8 pr-3 py-2 rounded text-xs" oninput="filterItems()">
       </div>
     </div>
 
@@ -126,73 +126,73 @@
       <!-- PANEL MODERATOR INPUT ENGINES -->
       <div class="lg:col-span-4">
         <!-- MOVIE PANEL BLOCK -->
-        <div id="pm" class="premium-card p-5 rounded-xl sticky top-20">
-          <h3 class="text-xs font-bold mb-4 text-white tracking-tight flex items-center gap-1.5"><i class="fa-solid fa-square-plus text-slate-400"></i> Inject New Movie Node</h3>
-          <div class="space-y-3.5">
+        <div id="pm" class="premium-card p-5 rounded-xl sticky top-24">
+          <h3 class="text-sm font-bold mb-4 text-white tracking-tight flex items-center gap-2"><i class="fa-solid fa-square-plus text-slate-400"></i> Inject New Movie Node</h3>
+          <div class="space-y-4">
             <div>
-              <label class="text-[10px] font-medium text-slate-400 block mb-1">IMDb ID</label>
-              <input id="mi" type="text" placeholder="e.g. tt0816692" class="prime-input w-full px-3 py-2 rounded text-xs font-mono">
+              <label class="text-xs font-medium text-slate-400 block mb-1">IMDb ID</label>
+              <input id="mi" type="text" placeholder="e.g. tt0816692" class="prime-input w-full px-3 py-2 rounded text-sm font-mono">
             </div>
             <div>
-              <label class="text-[10px] font-medium text-slate-400 block mb-1">Primary Stream Link</label>
-              <input id="mu" type="text" placeholder="HTTP direct streaming node path" class="prime-input w-full px-3 py-2 rounded text-xs">
+              <label class="text-xs font-medium text-slate-400 block mb-1">Primary Stream Link</label>
+              <input id="mu" type="text" placeholder="HTTP direct streaming node path" class="prime-input w-full px-3 py-2 rounded text-sm">
             </div>
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label class="text-[10px] font-medium text-slate-400 block mb-1">1080p URL</label>
-                <input id="m1" type="text" placeholder="Optional URL" class="prime-input w-full px-2.5 py-2 rounded text-xs">
+                <label class="text-xs font-medium text-slate-400 block mb-1">1080p URL</label>
+                <input id="m1" type="text" placeholder="Optional URL" class="prime-input w-full px-2.5 py-2 rounded text-sm">
               </div>
               <div>
-                <label class="text-[10px] font-medium text-slate-400 block mb-1">720p URL</label>
-                <input id="m7" type="text" placeholder="Optional URL" class="prime-input w-full px-2.5 py-2 rounded text-xs">
+                <label class="text-xs font-medium text-slate-400 block mb-1">720p URL</label>
+                <input id="m7" type="text" placeholder="Optional URL" class="prime-input w-full px-2.5 py-2 rounded text-sm">
               </div>
             </div>
-            <button class="w-full netflix-btn-primary text-white text-[11px] font-bold py-2.5 rounded transition mt-1 uppercase tracking-wider" onclick="addMovie()"><i class="fa-solid fa-plus mr-1"></i> Deploy Movie Assets</button>
+            <button class="w-full netflix-btn-primary text-white text-xs font-bold py-3 rounded transition mt-1 uppercase tracking-wider" onclick="addMovie()"><i class="fa-solid fa-plus mr-1"></i> Deploy Movie Assets</button>
           </div>
         </div>
 
         <!-- SERIES PANEL BLOCK -->
-        <div id="ps" class="premium-card p-5 rounded-xl hidden sticky top-20">
-          <h3 class="text-xs font-bold mb-4 text-white tracking-tight flex items-center gap-1.5"><i class="fa-solid fa-circle-plus text-slate-400"></i> Mount Series Index</h3>
-          <div class="space-y-3.5">
+        <div id="ps" class="premium-card p-5 rounded-xl hidden sticky top-24">
+          <h3 class="text-sm font-bold mb-4 text-white tracking-tight flex items-center gap-2"><i class="fa-solid fa-circle-plus text-slate-400"></i> Mount Series Index</h3>
+          <div class="space-y-4">
             <div>
-              <label class="text-[10px] font-medium text-slate-400 block mb-1">Series IMDb Identifier</label>
-              <input id="si" type="text" placeholder="e.g. tt0944947" class="prime-input w-full px-3 py-2 rounded text-xs font-mono">
+              <label class="text-xs font-medium text-slate-400 block mb-1">Series IMDb Identifier</label>
+              <input id="si" type="text" placeholder="e.g. tt0944947" class="prime-input w-full px-3 py-2 rounded text-sm font-mono">
             </div>
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label class="text-[10px] font-medium text-slate-400 block mb-1">Season</label>
-                <input id="ss" type="number" min="1" value="1" class="prime-input w-full px-3 py-2 rounded text-xs font-bold text-center">
+                <label class="text-xs font-medium text-slate-400 block mb-1">Season</label>
+                <input id="ss" type="number" min="1" value="1" class="prime-input w-full px-3 py-2 rounded text-sm font-bold text-center">
               </div>
               <div>
-                <label class="text-[10px] font-medium text-slate-400 block mb-1">Episode</label>
-                <input id="se" type="number" min="1" value="1" class="prime-input w-full px-3 py-2 rounded text-xs font-bold text-center">
+                <label class="text-xs font-medium text-slate-400 block mb-1">Episode</label>
+                <input id="se" type="number" min="1" value="1" class="prime-input w-full px-3 py-2 rounded text-sm font-bold text-center">
               </div>
             </div>
             <div>
-              <label class="text-[10px] font-medium text-slate-400 block mb-1">Episode Stream URL</label>
-              <input id="su" type="text" placeholder="HTTP stream file destination map" class="prime-input w-full px-3 py-2 rounded text-xs">
+              <label class="text-xs font-medium text-slate-400 block mb-1">Episode Stream URL</label>
+              <input id="su" type="text" placeholder="HTTP stream file destination map" class="prime-input w-full px-3 py-2 rounded text-sm">
             </div>
-            <button class="w-full bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold py-2.5 rounded transition mt-1 uppercase tracking-wider" onclick="addEp()"><i class="fa-solid fa-plus mr-1"></i> Link Episode Stream</button>
+            <button class="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-3 rounded transition mt-1 uppercase tracking-wider" onclick="addEp()"><i class="fa-solid fa-plus mr-1"></i> Link Episode Stream</button>
           </div>
         </div>
       </div>
 
-      <!-- ULTRA COMPACT CONSOLIDATED FEEDS DISPLAY -->
+      <!-- CONSOLIDATED FEEDS DISPLAY -->
       <div class="lg:col-span-8">
         <div id="ml-container" class="w-full">
-          <div id="ml" class="grid grid-cols-1 gap-2.5"></div>
+          <div id="ml" class="grid grid-cols-1 gap-3"></div>
         </div>
         <div id="sl-container" class="w-full hidden">
-          <div id="sl" class="grid grid-cols-1 gap-3"></div>
+          <div id="sl" class="grid grid-cols-1 gap-4.5"></div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- MINIMAL COMPACT TOAST -->
-<div id="toast" class="fixed bottom-6 right-6 px-4 py-2.5 rounded-lg text-[11px] font-semibold shadow-xl transform translate-y-24 opacity-0 transition-all duration-200 z-50 flex items-center gap-2 backdrop-blur-md"></div>
+<!-- COMPACT TOAST -->
+<div id="toast" class="fixed bottom-6 right-6 px-4 py-3 rounded-lg text-xs font-semibold shadow-xl transform translate-y-24 opacity-0 transition-all duration-200 z-50 flex items-center gap-2 backdrop-blur-md"></div>
 
 <script>
 var OMDB_API_KEY = 'deb30ab'; 
@@ -249,9 +249,9 @@ function fetchName(id, elementId, posterId, metaId) {
       var el = $(elementId), pEl = $(posterId), mEl = $(metaId);
       if(data && data.Title) {
         var cleanTitle = data.Title + ' (' + data.Year + ')';
-        var rating = data.imdbRating !== 'N/A' ? '<span class="text-amber-400 font-bold"><i class="fa-solid fa-star text-[9px]"></i> ' + data.imdbRating + '</span>' : '<span class="text-slate-600">★ N/A</span>';
+        var rating = data.imdbRating !== 'N/A' ? '<span class="text-amber-400 font-bold"><i class="fa-solid fa-star text-[10px]"></i> ' + data.imdbRating + '</span>' : '<span class="text-slate-600">★ N/A</span>';
         var runtime = data.Runtime !== 'N/A' ? data.Runtime : '';
-        var metaText = rating + ' <span class="text-slate-800">•</span> ' + data.Genre + ' <span class="text-slate-800">•</span> <span class="text-slate-400">' + runtime + '</span>';
+        var metaText = rating + ' <span class="text-slate-700">•</span> ' + data.Genre + ' <span class="text-slate-700">•</span> <span class="text-slate-400">' + runtime + '</span>';
         
         nameCache[id] = {
           title: cleanTitle,
@@ -346,7 +346,6 @@ function filterSeason(seriesId, dropdown) {
   });
 }
 
-// PREMIUM ACCORDION FUNCTION: Toggles Series Links Block View Smoothly
 function toggleAccordion(headerElement) {
   var contentBlock = headerElement.nextElementSibling;
   var icon = headerElement.querySelector('.accordion-chevron');
@@ -368,40 +367,40 @@ function render(){
 
   // ── MOVIE COMPACT RENDER ENGINE ──
   if(mv.length===0){
-    $('ml').innerHTML='<div class="premium-card text-slate-500 text-center text-[11px] py-12 rounded-lg border-dashed border-white/5">No active movie storage indexes located.</div>';
+    $('ml').innerHTML='<div class="premium-card text-slate-500 text-center text-xs py-14 rounded-lg border-dashed border-white/5">No active movie storage indexes located.</div>';
   } else {
     $('ml').innerHTML=mv.map(function(m, index){
       var uniqueElId = 'movie-name-' + index;
       var uniquePostId = 'movie-poster-' + index;
       var uniqueMetaId = 'movie-meta-' + index;
       var quals=[
-        m.streamUrl1080p?'<span class="bg-blue-500/10 border border-blue-500/10 px-1.5 py-0.5 rounded text-[9px] text-blue-400 font-bold uppercase">1080p</span>':'',
-        m.streamUrl720p?'<span class="bg-amber-500/10 border border-amber-500/10 px-1.5 py-0.5 rounded text-[9px] text-amber-400 font-bold uppercase">720p</span>':'',
-        m.streamUrl?'<span class="bg-white/5 border border-white/5 px-1.5 py-0.5 rounded text-[9px] text-slate-400 font-medium">Source</span>':''
+        m.streamUrl1080p?'<span class="bg-blue-500/10 border border-blue-500/10 px-2 py-0.5 rounded text-[10px] text-blue-400 font-bold uppercase">1080p</span>':'',
+        m.streamUrl720p?'<span class="bg-amber-500/10 border border-amber-500/10 px-2 py-0.5 rounded text-[10px] text-amber-400 font-bold uppercase">720p</span>':'',
+        m.streamUrl?'<span class="bg-white/5 border border-white/5 px-2 py-0.5 rounded text-[10px] text-slate-400 font-medium">Source</span>':''
       ].filter(Boolean).join(' ');
       
       setTimeout(function(){ fetchName(m.id, uniqueElId, uniquePostId, uniqueMetaId); }, 20 * index);
 
-      return '<div class="item-wrapper-node movie-item compact-asset-card p-3 rounded-lg flex items-center justify-between gap-4" data-id="'+m.id+'" data-name="">' +
-             '  <div class="flex items-center gap-3 min-w-0 flex-1">' +
-             '    <img id="'+uniquePostId+'" src="https://images.unsplash.com/photo-1594909122845-11baa439b7bf?w=50" class="w-10 h-14 object-cover rounded shadow bg-slate-900 flex-shrink-0" alt="">' +
-             '    <div class="min-w-0 flex-1 space-y-1">' +
-             '      <div class="flex items-center gap-2 truncate">' +
-             '        <h4 id="'+uniqueElId+'" class="text-white font-semibold text-df leading-none truncate">Parsing metadata pipeline...</h4>' +
-             '        <a href="https://www.imdb.com/title/'+m.id+'" target="_blank" class="text-[9px] font-mono bg-white/5 text-slate-500 hover:text-blue-400 px-1.5 py-0.5 rounded transition flex-shrink-0 flex items-center gap-0.5"><i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i> '+m.id+'</a>' +
+      return '<div class="item-wrapper-node movie-item compact-asset-card p-4 rounded-xl flex items-center justify-between gap-4" data-id="'+m.id+'" data-name="">' +
+             '  <div class="flex items-center gap-4 min-w-0 flex-1">' +
+             '    <img id="'+uniquePostId+'" src="https://images.unsplash.com/photo-1594909122845-11baa439b7bf?w=80" class="w-12 h-16 object-cover rounded shadow-md bg-slate-900 flex-shrink-0" alt="">' +
+             '    <div class="min-w-0 flex-1 space-y-1.5">' +
+             '      <div class="flex items-center gap-2.5 truncate">' +
+             '        <h4 id="'+uniqueElId+'" class="text-white font-semibold text-sm leading-none truncate">Parsing metadata pipeline...</h4>' +
+             '        <a href="https://www.imdb.com/title/'+m.id+'" target="_blank" class="text-[10px] font-mono bg-white/5 text-slate-500 hover:text-blue-400 px-2 py-0.5 rounded transition flex-shrink-0 flex items-center gap-1"><i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i> '+m.id+'</a>' +
              '      </div>' +
-             '      <div id="'+uniqueMetaId+'" class="text-[11px] text-slate-500 font-medium flex items-center gap-1 leading-none">Mapping...</div>' +
+             '      <div id="'+uniqueMetaId+'" class="text-xs text-slate-500 font-medium flex items-center gap-1 leading-none">Mapping...</div>' +
              '      <div class="flex items-center gap-1.5 pt-0.5">'+quals+'</div>' +
              '    </div>' +
              '  </div>' +
-             '  <button class="bg-rose-500/5 hover:bg-rose-600/15 text-rose-400 text-[10px] font-medium px-2.5 py-1.5 rounded-md transition flex-shrink-0" onclick="del(\''+m.id+'\')"><i class="fa-solid fa-trash-can text-[9px]"></i></button>' +
+             '  <button class="bg-rose-500/5 hover:bg-rose-600/15 text-rose-400 text-xs font-medium px-3 py-2 rounded-lg transition flex-shrink-0" onclick="del(\''+m.id+'\')"><i class="fa-solid fa-trash-can text-xs"></i></button>' +
              '</div>';
     }).join('');
   }
 
-  // ── SERIES COMPACT + CLICK TO EXPAND ACCORDION ENGINE ──
+  // ── SERIES COMPACT + ACCORDION ENGINE ──
   if(sr.length===0){
-    $('sl').innerHTML='<div class="premium-card text-slate-500 text-center text-[11px] py-12 rounded-lg border-dashed border-white/5">No tracking mapped series indexes present.</div>';
+    $('sl').innerHTML='<div class="premium-card text-slate-500 text-center text-xs py-14 rounded-lg border-dashed border-white/5">No tracking mapped series indexes present.</div>';
   } else {
     $('sl').innerHTML=sr.map(function(s, index){
       var uniqueElId = 'series-name-' + index;
@@ -421,12 +420,12 @@ function render(){
 
       var eps=(s.episodes||[]).map(function(e){
         var sn=String(e.season).padStart(2,'0'),en=String(e.episode).padStart(2,'0');
-        return '<div class="episode-row-node flex items-center justify-between bg-[#11141c]/60 hover:bg-[#151924] border border-white/[0.02] rounded px-2.5 py-2 text-[11px] text-slate-300 transition" data-season="'+e.season+'">' +
-               '  <div class="flex items-center gap-2.5 min-w-0 flex-1">' +
-               '    <span class="font-mono text-[9px] text-emerald-400 font-extrabold bg-emerald-500/10 px-1.5 py-0.5 rounded flex-shrink-0">S'+sn+'E'+en+'</span>' +
-               '    <span class="text-[10px] text-slate-400 font-mono select-all truncate pr-2 flex-1">'+e.streamUrl+'</span>' +
+        return '<div class="episode-row-node flex items-center justify-between bg-[#11141c]/60 hover:bg-[#151924] border border-white/[0.02] rounded px-3 py-2.5 text-xs text-slate-300 transition" data-season="'+e.season+'">' +
+               '  <div class="flex items-center gap-3 min-w-0 flex-1">' +
+               '    <span class="font-mono text-[10px] text-emerald-400 font-extrabold bg-emerald-500/10 px-2 py-0.5 rounded flex-shrink-0">S'+sn+'E'+en+'</span>' +
+               '    <span class="text-xs text-slate-400 font-mono select-all truncate pr-2 flex-1">'+e.streamUrl+'</span>' +
                '  </div>' +
-               '  <button class="text-slate-600 hover:text-rose-400 p-1 rounded transition" onclick="delEp(\''+s.id+'\','+e.season+','+e.episode+')"><i class="fa-solid fa-xmark text-xs"></i></button>' +
+               '  <button class="text-slate-600 hover:text-rose-400 p-1.5 rounded transition" onclick="delEp(\''+s.id+'\','+e.season+','+e.episode+')"><i class="fa-solid fa-xmark text-sm"></i></button>' +
                '</div>';
       }).join('');
       
@@ -435,34 +434,34 @@ function render(){
       return '<div class="item-wrapper-node series-item premium-card rounded-xl overflow-hidden" data-id="'+s.id+'" data-name="">' +
              '  <!-- CLICKABLE ACCORDION HEADER -->' +
              '  <div class="flex justify-between items-center gap-4 p-4 cursor-pointer hover:bg-white/[0.01] transition-all select-none" onclick="toggleAccordion(this)">' +
-             '    <div class="flex items-center gap-3 min-w-0 flex-1">' +
-             '      <img id="'+uniquePostId+'" src="https://images.unsplash.com/photo-1594909122845-11baa439b7bf?w=50" class="w-10 h-14 object-cover rounded shadow bg-slate-900 flex-shrink-0" alt="">' +
-             '      <div class="min-w-0 flex-1 space-y-1">' +
-             '        <div class="flex items-center gap-2 truncate">' +
-             '           <h4 id="'+uniqueElId+'" class="text-white font-semibold text-df leading-none truncate">Syncing network index...</h4>' +
-             '           <a href="https://www.imdb.com/title/'+s.id+'" target="_blank" onclick="event.stopPropagation();" class="text-[9px] font-mono bg-white/5 text-slate-500 hover:text-blue-400 px-1.5 py-0.5 rounded transition flex flex-items gap-0.5"><i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i> '+s.id+'</a>' +
+             '    <div class="flex items-center gap-4 min-w-0 flex-1">' +
+             '      <img id="'+uniquePostId+'" src="https://images.unsplash.com/photo-1594909122845-11baa439b7bf?w=80" class="w-12 h-16 object-cover rounded shadow-md bg-slate-900 flex-shrink-0" alt="">' +
+             '      <div class="min-w-0 flex-1 space-y-1.5">' +
+             '        <div class="flex items-center gap-2.5 truncate">' +
+             '           <h4 id="'+uniqueElId+'" class="text-white font-semibold text-sm leading-none truncate">Syncing network index...</h4>' +
+             '           <a href="https://www.imdb.com/title/'+s.id+'" target="_blank" onclick="event.stopPropagation();" class="text-[10px] font-mono bg-white/5 text-slate-500 hover:text-blue-400 px-2 py-0.5 rounded transition flex flex-items gap-1"><i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i> '+s.id+'</a>' +
              '        </div>' +
-             '        <div id="'+uniqueMetaId+'" class="text-[11px] text-slate-500 font-medium flex items-center gap-1 leading-none">Resolving...</div>' +
-             '        <div class="text-[9px] uppercase font-bold text-slate-400 tracking-wider pt-0.5 flex items-center gap-2">' +
-             '           <span><i class="fa-solid fa-layer-group text-[8px]"></i> '+(s.episodes||[]).length+' Links</span>' +
-             '           <span class="text-slate-600">|</span>' +
-             '           <span class="text-blue-400 text-[10px] font-medium"><i class="fa-solid fa-eye mr-0.5"></i> Click to view</span>' +
+             '        <div id="'+uniqueMetaId+'" class="text-xs text-slate-500 font-medium flex items-center gap-1 leading-none">Resolving...</div>' +
+             '        <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider pt-0.5 flex items-center gap-2.5">' +
+             '           <span><i class="fa-solid fa-layer-group text-[9px]"></i> '+(s.episodes||[]).length+' Links</span>' +
+             '           <span class="text-slate-700">|</span>' +
+             '           <span class="text-blue-400 text-xs font-medium"><i class="fa-solid fa-eye mr-0.5"></i> Click to view</span>' +
              '        </div>' +
              '      </div>' +
              '    </div>' +
-             '    <div class="flex items-center gap-3" onclick="event.stopPropagation();">' +
-             '      <button class="bg-rose-500/5 hover:bg-rose-600/15 text-rose-400 text-[10px] px-2 py-1.5 rounded-md transition" onclick="del(\''+s.id+'\')"><i class="fa-solid fa-trash-can text-[9px]"></i></button>' +
-             '      <i class="accordion-chevron fa-solid fa-chevron-down text-slate-500 text-[11px] transition-transform duration-200 mr-1" onclick="this.closest(\'.cursor-pointer\').click();"></i>' +
+             '    <div class="flex items-center gap-4" onclick="event.stopPropagation();">' +
+             '      <button class="bg-rose-500/5 hover:bg-rose-600/15 text-rose-400 text-xs px-3 py-2 rounded-lg transition" onclick="del(\''+s.id+'\')"><i class="fa-solid fa-trash-can text-xs"></i></button>' +
+             '      <i class="accordion-chevron fa-solid fa-chevron-down text-slate-500 text-xs transition-transform duration-200 mr-1.5" onclick="this.closest(\'.cursor-pointer\').click();"></i>' +
              '    </div>' +
              '  </div>' +
              '  ' +
-             '  <!-- COLLAPSIBLE LINK MATRIX (HIDDEN BY DEFAULT) -->' +
-             '  <div class="hidden border-t border-white/5 p-4 bg-[#0a0c10]/50 space-y-3">' +
+             '  <!-- COLLAPSIBLE LINK MATRIX -->' +
+             '  <div class="hidden border-t border-white/5 p-4 bg-[#0a0c10]/50 space-y-3.5">' +
              '    <div class="flex items-center justify-between gap-3 px-0.5">' +
-             '      <div class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Episodes Grid</div>' +
-             '      <select class="prime-input rounded px-2 py-1 text-[10px] font-bold text-white focus:outline-none cursor-pointer border border-white/10" onchange="filterSeason(\''+s.id+'\', this)">' + dropdownOptions + '</select>' +
+             '      <div class="text-xs uppercase font-bold text-slate-500 tracking-wider">Episodes Grid</div>' +
+             '      <select class="prime-input rounded px-2.5 py-1.5 text-xs font-bold text-white focus:outline-none cursor-pointer border border-white/10" onchange="filterSeason(\''+s.id+'\', this)">' + dropdownOptions + '</select>' +
              '    </div>' +
-             '    <div class="space-y-1.5 max-h-48 overflow-y-auto pr-0.5 select-none">' + eps + '</div>' +
+             '    <div class="space-y-2 max-h-56 overflow-y-auto pr-0.5 select-none">' + eps + '</div>' +
              '  </div>' +
              '</div>';
     }).join('');
@@ -478,8 +477,8 @@ function sw(t){
   $('ml-container').style.display=t==='movie'?'block':'none';
   $('sl-container').style.display=t==='series'?'block':'none';
 
-  $('tm').className='text-xs font-bold pb-2 relative transition-all border-b-2 '+(t==='movie'?'border-[#e50914] text-white':'border-transparent text-slate-500 hover:text-white');
-  $('ts').className='text-xs font-bold pb-2 relative transition-all border-b-2 '+(t==='series'?'border-[#e50914] text-white':'border-transparent text-slate-500 hover:text-white');
+  $('tm').className='text-sm font-bold pb-2 relative transition-all border-b-2 '+(t==='movie'?'border-[#e50914] text-white':'border-transparent text-slate-500 hover:text-white');
+  $('ts').className='text-sm font-bold pb-2 relative transition-all border-b-2 '+(t==='series'?'border-[#e50914] text-white':'border-transparent text-slate-500 hover:text-white');
   filterItems();
 }
 
