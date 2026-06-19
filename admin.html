@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AdharAlo Control Center v5.7</title>
+<title>AdharAlo Control Center v5.8</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -54,7 +54,6 @@
 </head>
 <body class="min-h-screen text-xs">
 
-<!-- PREMIUM AUTH OVERLAY -->
 <div id="lov" class="fixed inset-0 flex items-center justify-center z-50 px-4 bg-[#07080a]/98 backdrop-blur-md">
   <div class="premium-card p-10 rounded-xl w-full max-w-sm">
     <div class="text-center mb-6">
@@ -67,9 +66,7 @@
   </div>
 </div>
 
-<!-- MAIN LAYOUT PIPELINE -->
 <div id="app" class="hidden min-h-screen pb-16">
-  <!-- Small Brand Header -->
   <nav class="sticky top-0 z-40 px-6 py-3.5 flex items-center justify-between border-b border-white/5 bg-[#07080a]/90 backdrop-blur-md">
     <div class="flex items-center gap-4">
       <span class="font-extrabold text-lg tracking-tighter text-white">ADHARALO<span class="text-[#e50914]">PRO</span></span>
@@ -84,7 +81,6 @@
   </nav>
 
   <div class="max-w-6xl mx-auto px-4 mt-6">
-    <!-- MINI API LINK ENDPOINT BAR -->
     <div class="premium-card px-4 py-3 rounded-xl flex items-center justify-between gap-4 mb-5 text-[11px]">
       <div class="flex items-center gap-3 min-w-0">
         <i class="fa-solid fa-server text-slate-500 flex-shrink-0"></i>
@@ -93,7 +89,6 @@
       <button class="bg-white hover:bg-slate-200 text-black text-[10px] font-bold px-3 py-1.5 rounded transition flex-shrink-0" onclick="cp()"><i class="fa-regular fa-copy mr-1"></i> Copy Endpoint</button>
     </div>
 
-    <!-- MINIMAL STATS METRIC GRID -->
     <div class="grid grid-cols-3 gap-4 mb-6 text-center">
       <div class="premium-card py-3 px-2 rounded-xl">
         <div class="text-[10px] font-medium tracking-wide text-slate-500 uppercase">Movies</div>
@@ -109,7 +104,6 @@
       </div>
     </div>
 
-    <!-- TABBED COMPOSITIONS AND LIVE STREAM LOCATOR FILTER -->
     <div class="flex items-center justify-between gap-4 mb-5 border-b border-white/5 pb-2">
       <div class="flex gap-4">
         <button class="text-xs font-bold pb-2 relative transition-all border-b-2" id="tm" onclick="sw('movie')">Movies System</button>
@@ -121,11 +115,8 @@
       </div>
     </div>
 
-    <!-- MAIN TWO COLUMN FRAMEWORK BASEMENT -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
-      <!-- PANEL MODERATOR INPUT ENGINES -->
       <div class="lg:col-span-4">
-        <!-- MOVIE PANEL BLOCK -->
         <div id="pm" class="premium-card p-5 rounded-xl sticky top-20">
           <h3 class="text-xs font-bold mb-4 text-white tracking-tight flex items-center gap-1.5"><i class="fa-solid fa-square-plus text-slate-400"></i> Inject New Movie Node</h3>
           <div class="space-y-3.5">
@@ -151,7 +142,6 @@
           </div>
         </div>
 
-        <!-- SERIES PANEL BLOCK -->
         <div id="ps" class="premium-card p-5 rounded-xl hidden sticky top-20">
           <h3 class="text-xs font-bold mb-4 text-white tracking-tight flex items-center gap-1.5"><i class="fa-solid fa-circle-plus text-slate-400"></i> Mount Series Index</h3>
           <div class="space-y-3.5">
@@ -178,7 +168,6 @@
         </div>
       </div>
 
-      <!-- ULTRA COMPACT CONSOLIDATED FEEDS DISPLAY -->
       <div class="lg:col-span-8">
         <div id="ml-container" class="w-full">
           <div id="ml" class="grid grid-cols-1 gap-2.5"></div>
@@ -191,7 +180,6 @@
   </div>
 </div>
 
-<!-- MINIMAL COMPACT TOAST -->
 <div id="toast" class="fixed bottom-6 right-6 px-4 py-2.5 rounded-lg text-[11px] font-semibold shadow-xl transform translate-y-24 opacity-0 transition-all duration-200 z-50 flex items-center gap-2 backdrop-blur-md"></div>
 
 <script>
@@ -288,7 +276,6 @@ function addMovie(){
   });
 }
 
-// BUG FIXED: Pure Dynamic Submission Reset Protection Layer
 function addEp(){
   var id=xid($('si').value),s=parseInt($('ss').value),e=parseInt($('se').value),url=$('su').value.trim();
   if(!id||isNaN(s)||isNaN(e)||!url){toast('Invalid entries detected','e');return;}
@@ -297,7 +284,7 @@ function addEp(){
     D=d; 
     render();
     $('su').value=''; 
-    $('se').value=e+1; // Increments episode count dynamically inside bounds
+    $('se').value=e+1;
     toast('Episode mapping stream bound.');
   });
 }
@@ -330,6 +317,20 @@ function filterItems() {
       item.style.display = 'block';
     } else {
       item.style.display = 'none';
+    }
+  });
+}
+
+// PREMIUM FUNCTION: Dynamic Episode Filter Based on Dropdown Select
+function filterSeason(seriesId, dropdown) {
+  var targetSeason = dropdown.value;
+  var parentCard = dropdown.closest('.series-item');
+  var rows = parentCard.querySelectorAll('.episode-row-node');
+  rows.forEach(function(row) {
+    if(targetSeason === 'all' || row.getAttribute('data-season') === targetSeason) {
+      row.style.display = 'flex';
+    } else {
+      row.style.display = 'none';
     }
   });
 }
@@ -373,7 +374,7 @@ function render(){
     }).join('');
   }
 
-  // ── SERIES COMPACT RENDER ENGINE ──
+  // ── SERIES COMPACT + DROPDOWN STREAM RENDER ENGINE ──
   if(sr.length===0){
     $('sl').innerHTML='<div class="premium-card text-slate-500 text-center text-[11px] py-12 rounded-lg border-dashed border-white/5">No tracking mapped series indexes present.</div>';
   } else {
@@ -381,21 +382,35 @@ function render(){
       var uniqueElId = 'series-name-' + index;
       var uniquePostId = 'series-poster-' + index;
       var uniqueMetaId = 'series-meta-' + index;
+      
+      // Get Unique Seasons list dynamically
+      var seasonsList = [];
+      (s.episodes || []).forEach(function(e) {
+        if(!seasonsList.includes(e.season)) seasonsList.push(e.season);
+      });
+      seasonsList.sort(function(a,b){return a-b;});
+
+      // Dropdown Options Generator
+      var dropdownOptions = '<option value="all" class="bg-[#0d0f14]">All Seasons</option>';
+      seasonsList.forEach(function(sn) {
+        dropdownOptions += '<option value="'+sn+'" class="bg-[#0d0f14]">Season ' + String(sn).padStart(2,'0') + '</option>';
+      });
+
       var eps=(s.episodes||[]).map(function(e){
         var sn=String(e.season).padStart(2,'0'),en=String(e.episode).padStart(2,'0');
-        return '<div class="flex items-center justify-between bg-[#11141c] border border-white/[0.01] rounded px-3 py-1.5 text-[11px] text-slate-300 transition">' +
-               '  <div class="flex items-center gap-3 min-w-0 flex-1">' +
-               '    <span class="font-mono text-[10px] text-blue-400 font-bold bg-blue-500/10 px-2 py-0.5 rounded flex-shrink-0">S'+sn+'E'+en+'</span>' +
-               '    <span class="text-[10px] text-slate-500 font-mono select-all truncate pr-2 flex-1">'+e.streamUrl+'</span>' +
+        return '<div class="episode-row-node flex items-center justify-between bg-[#11141c]/60 hover:bg-[#151924] border border-white/[0.02] rounded px-2.5 py-2 text-[11px] text-slate-300 transition" data-season="'+e.season+'">' +
+               '  <div class="flex items-center gap-2.5 min-w-0 flex-1">' +
+               '    <span class="font-mono text-[9px] text-emerald-400 font-extrabold bg-emerald-500/10 px-1.5 py-0.5 rounded flex-shrink-0">S'+sn+'E'+en+'</span>' +
+               '    <span class="text-[10px] text-slate-400 font-mono select-all truncate pr-2 flex-1">'+e.streamUrl+'</span>' +
                '  </div>' +
-               '  <button class="text-slate-600 hover:text-rose-400 p-1 rounded" onclick="delEp(\''+s.id+'\','+e.season+','+e.episode+')"><i class="fa-solid fa-xmark text-xs"></i></button>' +
+               '  <button class="text-slate-600 hover:text-rose-400 p-1 rounded transition" onclick="delEp(\''+s.id+'\','+e.season+','+e.episode+')"><i class="fa-solid fa-xmark text-xs"></i></button>' +
                '</div>';
       }).join('');
       
       setTimeout(function(){ fetchName(s.id, uniqueElId, uniquePostId, uniqueMetaId); }, 20 * index);
 
-      return '<div class="item-wrapper-node series-item compact-asset-card p-4 rounded-lg" data-id="'+s.id+'" data-name="">' +
-             '  <div class="flex justify-between items-center gap-4 pb-3 border-b border-white/5 mb-3">' +
+      return '<div class="item-wrapper-node series-item premium-card p-4 rounded-xl" data-id="'+s.id+'" data-name="">' +
+             '  <div class="flex justify-between items-start gap-4 pb-3 border-b border-white/5 mb-3">' +
              '    <div class="flex items-center gap-3 min-w-0 flex-1">' +
              '      <img id="'+uniquePostId+'" src="https://images.unsplash.com/photo-1594909122845-11baa439b7bf?w=50" class="w-10 h-14 object-cover rounded shadow bg-slate-900 flex-shrink-0" alt="">' +
              '      <div class="min-w-0 flex-1 space-y-1">' +
@@ -404,12 +419,17 @@ function render(){
              '           <a href="https://www.imdb.com/title/'+s.id+'" target="_blank" class="text-[9px] font-mono bg-white/5 text-slate-500 hover:text-blue-400 px-1.5 py-0.5 rounded transition flex flex-items gap-0.5"><i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i> '+s.id+'</a>' +
              '        </div>' +
              '        <div id="'+uniqueMetaId+'" class="text-[11px] text-slate-500 font-medium flex items-center gap-1 leading-none">Resolving...</div>' +
-             '        <div class="text-[9px] uppercase font-bold text-slate-500 tracking-wider pt-0.5"><i class="fa-solid fa-layer-group text-[8px]"></i> '+(s.episodes||[]).length+' Links Built</div>' +
+             '        <div class="text-[9px] uppercase font-bold text-slate-400 tracking-wider pt-0.5"><i class="fa-solid fa-layer-group text-[8px]"></i> '+(s.episodes||[]).length+' Links Built</div>' +
              '      </div>' +
              '    </div>' +
-             '    <button class="bg-rose-500/5 hover:bg-rose-600/15 text-rose-400 text-[10px] px-2.5 py-1.5 rounded-md transition flex-shrink-0" onclick="del(\''+s.id+'\')"><i class="fa-solid fa-trash-can text-[9px]"></i></button>' +
+             '    <button class="bg-rose-500/5 hover:bg-rose-600/15 text-rose-400 text-[10px] px-2 py-1.5 rounded-md transition flex-shrink-0" onclick="del(\''+s.id+'\')"><i class="fa-solid fa-trash-can text-[9px]"></i></button>' +
              '  </div>' +
-             '  <div class="space-y-1.5 max-h-44 overflow-y-auto pr-0.5 select-none">' + eps + '</div>' +
+             '  ' +
+             '  <div class="flex items-center justify-between gap-3 mb-2 px-0.5">' +
+             '    <div class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Episodes Grid</div>' +
+             '    <select class="prime-input rounded px-2 py-1 text-[10px] font-bold text-white focus:outline-none cursor-pointer border border-white/10" onchange="filterSeason(\''+s.id+'\', this)">' + dropdownOptions + '</select>' +
+             '  </div>' +
+             '  <div class="space-y-1.5 max-h-48 overflow-y-auto pr-0.5 select-none">' + eps + '</div>' +
              '</div>';
     }).join('');
   }
