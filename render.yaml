@@ -1,9 +1,0 @@
-services:
-  - type: web
-    name: my-ftp-stremio-addon
-    env: node
-    buildCommand: npm install
-    startCommand: npm start
-    envVars:
-      - key: PORT
-        value: 7000
