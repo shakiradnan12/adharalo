@@ -179,8 +179,8 @@ app.delete('/api/movies/:id/episodes/:season/:episode', requireAuth, async (req,
 app.get('/manifest.json', (req, res) => {
   res.json({
     id: 'org.adharalo.ftpaddon',
-    version: '2.5.0',
-    name: 'AdharAlo Server Engine',
+    version: '1.5.0',
+    name: 'AdharAlo Support By Adnan',
     description: 'Enterprise Premium Streaming Gateway for Personal Library Stream Nodes.',
     resources: ['stream'],
     types: ['movie', 'series'],
