@@ -27,17 +27,40 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;position:relative}
 ::selection{background:var(--red);color:#fff}
 ::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--muted2);border-radius:4px}
 
+/* ── AMBIENT PREMIUM BACKGROUND ── */
+.ambient{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.ambient::before,.ambient::after{content:'';position:absolute;border-radius:50%;filter:blur(90px);opacity:.35}
+.ambient::before{width:520px;height:520px;background:radial-gradient(circle,var(--red) 0%,transparent 70%);top:-180px;left:-120px;animation:float1 22s ease-in-out infinite}
+.ambient::after{width:460px;height:460px;background:radial-gradient(circle,var(--accent) 0%,transparent 70%);bottom:-160px;right:-100px;animation:float2 26s ease-in-out infinite}
+@keyframes float1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(60px,40px) scale(1.15)}}
+@keyframes float2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-50px,-30px) scale(1.1)}}
+.noise{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+#app,.auth-overlay{position:relative;z-index:2}
+
+/* ── GRADIENT WORDMARK ── */
+.grad-text{background:linear-gradient(100deg,#fff 30%,var(--red) 65%,#ff8a8a 100%);background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:gradshift 6s ease infinite}
+@keyframes gradshift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+
+/* ── ENTRANCE ANIMATIONS ── */
+@keyframes riseIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.movie-card,.list-item,.series-card{animation:riseIn .45s cubic-bezier(.16,1,.3,1) backwards}
+
+/* ── BUTTON SHINE ── */
+.btn-red,.auth-btn,.submit-btn{position:relative;overflow:hidden}
+.btn-red::after,.auth-btn::after,.submit-btn::after{content:'';position:absolute;top:0;left:-120%;width:60%;height:100%;background:linear-gradient(115deg,transparent,rgba(255,255,255,0.25),transparent);transform:skewX(-20deg);transition:left .55s ease}
+.btn-red:hover::after,.auth-btn:hover::after,.submit-btn:hover::after{left:130%}
+
 /* ── AUTH ── */
 .auth-overlay{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 0%, rgba(232,0,29,0.08) 0%, var(--bg) 60%)}
 .auth-card{width:360px;padding:3rem 2.5rem;background:var(--surface);border:1px solid var(--border2);border-radius:20px;position:relative;overflow:hidden}
 .auth-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--red),transparent)}
-.auth-logo{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;letter-spacing:-0.04em;color:#fff;text-align:center;margin-bottom:.25rem}
+.auth-logo{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;letter-spacing:-0.04em;text-align:center;margin-bottom:.25rem}
 .auth-logo span{color:var(--red)}
 .auth-sub{text-align:center;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:2.5rem}
 .auth-input{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:12px 16px;font-size:14px;color:#fff;font-family:'Inter',sans-serif;outline:none;transition:border .2s,box-shadow .2s;text-align:center;letter-spacing:.1em;margin-bottom:1rem}
@@ -49,7 +72,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 /* ── LAYOUT ── */
 #app{display:none;min-height:100vh}
 .topbar{position:sticky;top:0;z-index:50;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;background:rgba(6,6,8,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
-.topbar-logo{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:800;letter-spacing:-.03em;color:#fff}
+.topbar-logo{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:800;letter-spacing:-.03em}
 .topbar-logo span{color:var(--red)}
 .topbar-status{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:500;color:var(--green);background:var(--green-dim);border:1px solid rgba(0,208,132,0.15);padding:5px 12px;border-radius:999px}
 .topbar-status::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
@@ -65,7 +88,8 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 
 /* ── SIDEBAR ── */
 .sidebar{background:var(--surface);border-right:1px solid var(--border);padding:1.5rem;display:flex;flex-direction:column;gap:1.25rem;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto}
-.sidebar-section{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:1.25rem;position:relative;overflow:hidden}
+.sidebar-section{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:1.25rem;position:relative;overflow:hidden;transition:border-color .2s}
+.sidebar-section:hover{border-color:var(--border2)}
 .sidebar-section::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--border2),transparent)}
 .section-title{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;display:flex;align-items:center;gap:8px}
 .section-title i{font-size:10px}
@@ -88,7 +112,8 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 
 /* ── STATS ── */
 .stats-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.6rem}
-.stat-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:.85rem;text-align:center}
+.stat-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:.85rem;text-align:center;transition:all .2s}
+.stat-card:hover{transform:translateY(-2px);border-color:var(--border2);box-shadow:0 8px 20px rgba(0,0,0,.35)}
 .stat-num{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;line-height:1}
 .stat-label{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:4px}
 
@@ -98,8 +123,8 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .content-title{font-family:'Syne',sans-serif;font-size:1.25rem;font-weight:800;letter-spacing:-.02em}
 .search-box{position:relative;flex:1;max-width:280px}
 .search-box i{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--muted)}
-.search-box input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:9px 12px 9px 34px;font-size:13px;color:#fff;outline:none;transition:all .15s;font-family:'Inter',sans-serif}
-.search-box input:focus{border-color:var(--border2);background:var(--surface)}
+.search-box input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:9px 12px 9px 34px;font-size:13px;color:#fff;outline:none;transition:all .2s;font-family:'Inter',sans-serif}
+.search-box input:focus{border-color:var(--red);background:var(--surface);box-shadow:0 0 0 3px var(--red-dim),0 4px 16px rgba(232,0,29,0.15)}
 
 /* ── VIEW TOGGLE ── */
 .view-toggle{display:flex;gap:4px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:3px}
@@ -109,7 +134,9 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 /* ── GRID VIEW ── */
 .movie-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1rem}
 .movie-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:all .25s;position:relative;group}
-.movie-card:hover{border-color:var(--border2);transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.5)}
+.movie-card:hover{border-color:rgba(232,0,29,0.35);transform:translateY(-5px) scale(1.015);box-shadow:0 16px 40px rgba(0,0,0,.55),0 0 0 1px rgba(232,0,29,0.1),0 0 28px rgba(232,0,29,0.18)}
+.movie-card-poster{transition:transform .4s ease}
+.movie-card:hover .movie-card-poster{transform:scale(1.06)}
 .movie-card-poster{width:100%;aspect-ratio:2/3;object-fit:cover;background:var(--surface2);display:block}
 .movie-card-body{padding:.75rem}
 .movie-card-title{font-size:12px;font-weight:600;color:#fff;line-height:1.3;margin-bottom:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
@@ -143,8 +170,8 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .del-btn:hover{background:var(--red);color:#fff}
 
 /* ── SERIES CARD ── */
-.series-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:border .15s}
-.series-card:hover{border-color:var(--border2)}
+.series-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:all .25s}
+.series-card:hover{border-color:rgba(124,106,255,0.35);box-shadow:0 14px 36px rgba(0,0,0,.5),0 0 24px rgba(124,106,255,0.16)}
 .series-header{display:flex;align-items:center;gap:1rem;padding:1rem 1.1rem;cursor:pointer;transition:background .15s}
 .series-header:hover{background:rgba(255,255,255,0.02)}
 .series-poster{width:46px;height:64px;border-radius:8px;object-fit:cover;background:var(--surface2);flex-shrink:0}
@@ -181,14 +208,66 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 /* ── LOADING SKELETON ── */
 @keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
 .skeleton{background:linear-gradient(90deg,var(--surface2) 25%,var(--surface) 50%,var(--surface2) 75%);background-size:800px 100%;animation:shimmer 1.5s infinite;border-radius:4px}
+.skel-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.skel-poster{width:100%;aspect-ratio:2/3}
+.skel-line{height:10px;margin:.75rem;border-radius:4px}
+
+/* ── BRANDING (logo upload) ── */
+.brand-row{display:flex;align-items:center;gap:.75rem}
+.brand-preview{width:48px;height:48px;border-radius:10px;background:var(--bg);border:1px solid var(--border2);object-fit:cover;flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden;color:var(--muted2);font-size:18px}
+.brand-preview img{width:100%;height:100%;object-fit:cover}
+.brand-actions{display:flex;flex-direction:column;gap:6px;flex:1}
+.brand-btn{font-size:11px;font-weight:600;padding:7px 10px;border-radius:7px;border:1px solid var(--border2);background:var(--bg);color:var(--muted);cursor:pointer;text-align:center;transition:all .15s;font-family:'Inter',sans-serif;display:block}
+.brand-btn:hover{color:#fff;border-color:var(--red)}
+.brand-btn.danger{color:var(--red);border-color:rgba(232,0,29,0.2)}
+.brand-btn.danger:hover{background:var(--red-dim)}
+.brand-hint{font-size:10.5px;color:var(--muted2);margin-top:.6rem;line-height:1.4}
+
+/* ── MODALS (edit / confirm) ── */
+.modal-overlay{position:fixed;inset:0;z-index:150;display:none;align-items:center;justify-content:center;background:rgba(2,2,4,0.78);backdrop-filter:blur(6px);padding:1.25rem}
+.modal-overlay.show{display:flex;animation:fadeBg .2s ease}
+@keyframes fadeBg{from{opacity:0}to{opacity:1}}
+.modal-card{width:100%;max-width:440px;background:var(--surface);border:1px solid var(--border2);border-radius:18px;padding:1.75rem;position:relative;overflow:hidden;max-height:88vh;overflow-y:auto;animation:modalPop .28s cubic-bezier(.16,1,.3,1)}
+@keyframes modalPop{from{opacity:0;transform:scale(.92) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--red),transparent)}
+.modal-head{display:flex;align-items:center;gap:.85rem;margin-bottom:1.4rem}
+.modal-poster{width:54px;height:76px;border-radius:8px;object-fit:cover;background:var(--surface2);flex-shrink:0}
+.modal-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;color:#fff;line-height:1.25}
+.modal-sub{font-size:11px;color:var(--muted);margin-top:3px;display:flex;gap:8px;align-items:center}
+.modal-plot{font-size:12px;color:var(--muted);line-height:1.55;margin-bottom:1.25rem;border-left:2px solid var(--border2);padding-left:.75rem}
+.modal-actions{display:flex;gap:.6rem;margin-top:1.5rem}
+.modal-btn{flex:1;border:none;border-radius:9px;padding:11px;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s}
+.modal-btn.ghost{background:var(--surface2);color:var(--muted);border:1px solid var(--border2)}
+.modal-btn.ghost:hover{color:#fff}
+.modal-btn.primary{background:var(--red);color:#fff}
+.modal-btn.primary:hover{background:#c8001a;box-shadow:0 4px 20px var(--red-glow)}
+.modal-btn.danger-outline{background:var(--red-dim);color:var(--red);border:1px solid rgba(232,0,29,0.2)}
+.modal-btn.danger-outline:hover{background:var(--red);color:#fff}
+.modal-refresh{background:transparent;border:1px solid var(--border2);color:var(--muted);border-radius:7px;padding:5px 10px;font-size:11px;cursor:pointer;font-family:'Inter',sans-serif;display:inline-flex;align-items:center;gap:6px;transition:all .15s}
+.modal-refresh:hover{color:#fff;border-color:var(--accent)}
+.modal-refresh.spin i{animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.confirm-card{max-width:340px;text-align:center}
+.confirm-icon{font-size:1.8rem;color:var(--red);margin-bottom:.75rem}
+.confirm-text{font-size:13px;color:var(--text);margin-bottom:.25rem;font-weight:600}
+.confirm-sub{font-size:11.5px;color:var(--muted);margin-bottom:1.25rem}
+
+/* ── INLINE EPISODE EDIT ── */
+.ep-url-input{flex:1;background:var(--bg);border:1px solid var(--accent);border-radius:6px;padding:5px 8px;font-size:11px;color:#fff;outline:none;font-family:'Inter',sans-serif}
+.ep-edit{background:transparent;border:none;color:var(--muted2);cursor:pointer;font-size:12px;transition:color .15s;padding:2px 6px;border-radius:4px}
+.ep-edit:hover{color:var(--accent);background:var(--accent-dim)}
+.ep-save{background:var(--green-dim);border:none;color:var(--green);cursor:pointer;font-size:12px;padding:2px 7px;border-radius:4px;font-weight:700}
 </style>
 </head>
 <body>
+<div class="ambient"></div>
+<div class="noise"></div>
 
 <!-- AUTH -->
 <div id="lov" class="auth-overlay">
   <div class="auth-card">
-    <div class="auth-logo">ADHAR<span>ALO</span></div>
+    <div class="auth-logo grad-text">ADHAR<span>ALO</span></div>
     <div class="auth-sub">Cinema Server · Admin Access</div>
     <input id="pw" type="password" class="auth-input" placeholder="••••••••••" onkeydown="if(event.key==='Enter')login()">
     <button class="auth-btn" onclick="login()"><i class="fa-solid fa-shield-halved"></i> Authenticate</button>
@@ -199,7 +278,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 <!-- APP -->
 <div id="app">
   <nav class="topbar">
-    <div class="topbar-logo">ADHAR<span>ALO</span></div>
+    <div class="topbar-logo grad-text">ADHAR<span>ALO</span></div>
     <div class="topbar-status">Stream Node Live</div>
     <div class="topbar-actions">
       <a id="install-link" href="#" class="btn-ghost"><i class="fa-solid fa-clapperboard"></i> Stremio Install</a>
@@ -229,6 +308,20 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
       <div class="tab-switcher">
         <button class="tab-btn active" id="tab-m" onclick="sw('movie')"><i class="fa-solid fa-film"></i> Movie</button>
         <button class="tab-btn" id="tab-s" onclick="sw('series')"><i class="fa-solid fa-tv"></i> Series</button>
+      </div>
+
+      <!-- BRANDING -->
+      <div class="sidebar-section">
+        <div class="section-title"><i class="fa-solid fa-stamp"></i> Addon Branding</div>
+        <div class="brand-row">
+          <div class="brand-preview" id="brand-preview"><i class="fa-solid fa-image"></i></div>
+          <div class="brand-actions">
+            <label class="brand-btn" for="logo-file"><i class="fa-solid fa-upload"></i> Upload Logo</label>
+            <button class="brand-btn danger" id="logo-remove-btn" onclick="removeLogo()" style="display:none"><i class="fa-solid fa-trash-can"></i> Remove</button>
+          </div>
+          <input type="file" id="logo-file" accept=".png,.jpg,.jpeg,.svg" style="display:none" onchange="uploadLogo(this.files[0])">
+        </div>
+        <div class="brand-hint">PNG/JPG/SVG, max 3MB. Shows next to your addon name inside the Stremio app.</div>
       </div>
 
       <!-- MOVIE FORM -->
@@ -313,37 +406,138 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 
 <div id="toast" class="toast"></div>
 
+<!-- EDIT / DETAILS MODAL -->
+<div id="edit-overlay" class="modal-overlay">
+  <div class="modal-card">
+    <div class="modal-head">
+      <img id="em-poster" class="modal-poster" src="" alt="">
+      <div>
+        <div class="modal-title" id="em-title">—</div>
+        <div class="modal-sub">
+          <span id="em-year"></span>
+          <span id="em-rating"></span>
+          <button class="modal-refresh" id="em-refresh-btn" onclick="refreshMeta()"><i class="fa-solid fa-rotate"></i> Refresh metadata</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-plot" id="em-plot" style="display:none"></div>
+    <input type="hidden" id="em-id">
+    <div class="field">
+      <label>Source Stream URL</label>
+      <input id="em-url" type="text" placeholder="http://ftp.adharalo.com/...">
+    </div>
+    <div class="field-row" style="margin-bottom:.85rem">
+      <div>
+        <label style="display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase">1080p URL</label>
+        <input id="em-1080" type="text" class="" placeholder="Optional" style="width:100%;background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:9px 12px;font-size:13px;color:#fff;outline:none;font-family:'Inter',sans-serif">
+      </div>
+      <div>
+        <label style="display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase">720p URL</label>
+        <input id="em-720" type="text" placeholder="Optional" style="width:100%;background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:9px 12px;font-size:13px;color:#fff;outline:none;font-family:'Inter',sans-serif">
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-btn ghost" onclick="closeEdit()">Cancel</button>
+      <button class="modal-btn danger-outline" onclick="delFromModal()"><i class="fa-solid fa-trash-can"></i></button>
+      <button class="modal-btn primary" onclick="saveEdit()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM MODAL -->
+<div id="confirm-overlay" class="modal-overlay">
+  <div class="modal-card confirm-card">
+    <div class="confirm-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+    <div class="confirm-text" id="confirm-text">Remove this item?</div>
+    <div class="confirm-sub" id="confirm-sub">This action can't be undone.</div>
+    <div class="modal-actions">
+      <button class="modal-btn ghost" onclick="closeConfirm()">Cancel</button>
+      <button class="modal-btn primary" id="confirm-ok-btn">Remove</button>
+    </div>
+  </div>
+</div>
+
 <script>
 var D=[], nameCache={}, view='grid', currentTab='movie';
-var OMDB='deb30ab';
 var BASE=window.location.origin;
 var $=function(id){return document.getElementById(id);};
 function xid(v){var m=v.match(/tt\d+/);return m?m[0]:v.trim();}
+function validId(id){return /^tt\d+$/.test(id);}
 
 function init(){
   $('manifest-url').textContent=BASE+'/manifest.json';
   $('install-link').href='stremio://'+window.location.host+'/manifest.json';
   fetch('/api/me').then(r=>r.json()).then(me=>{
-    if(me.loggedIn){$('lov').style.display='none';$('app').style.display='block';load();}
+    if(me.loggedIn){$('lov').style.display='none';$('app').style.display='block';load();loadLogoPreview();}
+  });
+}
+
+function loadLogoPreview(){
+  ['png','jpg','jpeg','svg'].forEach(function(ext){
+    var img=new Image();
+    img.onload=function(){
+      $('brand-preview').innerHTML='<img src="/public/logo.'+ext+'?t='+Date.now()+'">';
+      $('logo-remove-btn').style.display='block';
+    };
+    img.src='/public/logo.'+ext+'?t='+Date.now();
+  });
+}
+
+function uploadLogo(file){
+  if(!file)return;
+  if(file.size>3*1024*1024){toast('Logo must be under 3MB','e');return;}
+  var fd=new FormData();
+  fd.append('logo',file);
+  fetch('/api/upload-logo',{method:'POST',body:fd}).then(r=>r.json()).then(d=>{
+    if(d.ok){
+      $('brand-preview').innerHTML='<img src="'+d.url+'?t='+Date.now()+'">';
+      $('logo-remove-btn').style.display='block';
+      toast('Logo uploaded! Reinstall the addon in Stremio to see it.');
+    } else toast(d.error||'Upload failed','e');
+  }).catch(()=>toast('Upload failed','e'));
+}
+
+function removeLogo(){
+  showConfirm('Remove addon logo?','It will fall back to no logo in Stremio.',function(){
+    fetch('/api/upload-logo',{method:'DELETE'}).then(r=>r.json()).then(()=>{
+      $('brand-preview').innerHTML='<i class="fa-solid fa-image"></i>';
+      $('logo-remove-btn').style.display='none';
+      toast('Logo removed','e');
+    });
   });
 }
 
 function login(){
   fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:$('pw').value})})
-  .then(r=>{if(r.ok){$('lov').style.display='none';$('app').style.display='block';load();}else $('lerr').style.display='block';});
+  .then(r=>{if(r.ok){$('lov').style.display='none';$('app').style.display='block';load();loadLogoPreview();}else $('lerr').style.display='block';});
 }
 function logout(){fetch('/api/logout',{method:'POST'}).then(()=>location.reload());}
 
 function load(){
+  $('content-area').innerHTML='<div class="movie-grid">'+Array(8).fill('<div class="skel-card"><div class="skeleton skel-poster"></div><div class="skeleton skel-line" style="width:80%"></div><div class="skeleton skel-line" style="width:50%"></div></div>').join('')+'</div>';
   fetch('/api/movies').then(r=>r.json()).then(d=>{D=d;updateStats();renderTab();});
 }
 
 function updateStats(){
   var mv=D.filter(m=>m.type==='movie'), sr=D.filter(m=>m.type==='series');
   var eps=sr.reduce((a,s)=>a+(s.episodes||[]).length,0);
-  $('cnt-m').textContent=mv.length;
-  $('cnt-s').textContent=sr.length;
-  $('cnt-e').textContent=eps;
+  animateCount('cnt-m',mv.length);
+  animateCount('cnt-s',sr.length);
+  animateCount('cnt-e',eps);
+}
+
+function animateCount(id, target){
+  var el=$(id);
+  var start=parseInt(el.textContent)||0;
+  if(start===target)return;
+  var dur=500, t0=performance.now();
+  function tick(now){
+    var p=Math.min(1,(now-t0)/dur);
+    var eased=1-Math.pow(1-p,3);
+    el.textContent=Math.round(start+(target-start)*eased);
+    if(p<1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
 }
 
 function sw(t){
@@ -390,20 +584,21 @@ function renderTab(){
 
 function fetchMeta(id, cb){
   if(nameCache[id]){cb(nameCache[id]);return;}
-  fetch('https://www.omdbapi.com/?apikey='+OMDB+'&i='+id)
+  fetch('/api/admin-meta/'+id)
   .then(r=>r.json()).then(data=>{
-    var obj={title:id,poster:null,year:'',rating:'',genre:'',runtime:''};
-    if(data&&data.Title){
-      obj.title=data.Title;
-      obj.year=data.Year||'';
-      obj.rating=data.imdbRating!=='N/A'?data.imdbRating:'';
-      obj.genre=data.Genre!=='N/A'?data.Genre:'';
-      obj.runtime=data.Runtime!=='N/A'?data.Runtime:'';
-      obj.poster=data.Poster!=='N/A'?data.Poster:null;
-    }
+    var obj={
+      title:data&&data.name?data.name:id,
+      poster:data&&data.poster?data.poster:null,
+      year:data&&data.year?data.year:'',
+      rating:data&&data.rating?data.rating:'',
+      genre:data&&data.genre?data.genre:'',
+      runtime:data&&data.runtime?data.runtime:'',
+      plot:data&&data.plot?data.plot:''
+    };
     nameCache[id]=obj;
     cb(obj);
-  }).catch(()=>{nameCache[id]={title:id,poster:null,year:'',rating:'',genre:'',runtime:''};cb(nameCache[id]);});
+    if($('q').value.trim()) filterRender();
+  }).catch(()=>{nameCache[id]={title:id,poster:null,year:'',rating:'',genre:'',runtime:'',plot:''};cb(nameCache[id]);});
 }
 
 function renderMovieGrid(items){
@@ -417,7 +612,7 @@ function renderMovieGrid(items){
     if(m.streamUrl1080p) quals+='<span class="q-badge q-1080">1080p</span>';
     if(m.streamUrl720p) quals+='<span class="q-badge q-720">720p</span>';
     if(m.streamUrl) quals+='<span class="q-badge q-src">SRC</span>';
-    html+='<div class="movie-card" id="mc-'+i+'">'
+    html+='<div class="movie-card" id="mc-'+i+'" style="animation-delay:'+(Math.min(i,14)*35)+'ms" onclick="openEdit(\''+m.id+'\',\'movie\')">'
       +'<span class="movie-card-type type-movie">MOVIE</span>'
       +'<img class="movie-card-poster" src="'+(poster||'')+'" onerror="this.style.background=\'var(--surface2)\'" alt="">'
       +'<div class="movie-card-overlay">'
@@ -457,15 +652,15 @@ function renderMovieList(items){
     if(m.streamUrl1080p) quals+='<span class="q-badge q-1080">1080p</span> ';
     if(m.streamUrl720p) quals+='<span class="q-badge q-720">720p</span> ';
     if(m.streamUrl) quals+='<span class="q-badge q-src">SRC</span>';
-    html+='<div class="list-item" id="ml-'+i+'">'
+    html+='<div class="list-item" id="ml-'+i+'" style="cursor:pointer;animation-delay:'+(Math.min(i,14)*30)+'ms" onclick="openEdit(\''+m.id+'\',\'movie\')">'
       +'<img class="list-poster" src="'+(poster||'')+'" onerror="this.style.background=\'var(--surface2)\'" alt="">'
       +'<div class="list-info">'
       +'<div class="list-title" id="mlt-'+i+'">'+title+'</div>'
       +'<div class="list-meta">'+(rating?'<span style="color:var(--amber)">'+rating+'</span>':'')+(genre?'<span>'+genre+'</span>':'')+'<span style="display:flex;gap:4px">'+quals+'</span></div>'
       +'</div>'
       +'<div class="list-actions">'
-      +'<a href="https://www.imdb.com/title/'+m.id+'" target="_blank" class="imdb-link">IMDb</a>'
-      +'<button class="del-btn" onclick="del(\''+m.id+'\')"><i class="fa-solid fa-trash-can"></i></button>'
+      +'<a href="https://www.imdb.com/title/'+m.id+'" target="_blank" onclick="event.stopPropagation()" class="imdb-link">IMDb</a>'
+      +'<button class="del-btn" onclick="event.stopPropagation();del(\''+m.id+'\')"><i class="fa-solid fa-trash-can"></i></button>'
       +'</div>'
       +'</div>';
     if(!cached){
@@ -492,14 +687,15 @@ function renderSeriesList(items){
     var seaOpts='<option value="all">All Seasons</option>'+seasons.map(sn=>'<option value="'+sn+'">Season '+String(sn).padStart(2,'0')+'</option>').join('');
     var epsHtml=eps.map(e=>{
       var sn=String(e.season).padStart(2,'0'),en=String(e.episode).padStart(2,'0');
-      return '<div class="ep-row" data-season="'+e.season+'">'
+      return '<div class="ep-row" data-season="'+e.season+'" data-id="'+s.id+'" data-s="'+e.season+'" data-e="'+e.episode+'">'
         +'<span class="ep-badge">S'+sn+'E'+en+'</span>'
         +'<span class="ep-url" title="'+e.streamUrl+'">'+e.streamUrl+'</span>'
+        +'<button class="ep-edit" onclick="editEpInline(this)"><i class="fa-solid fa-pen"></i></button>'
         +'<button class="ep-del" onclick="delEp(\''+s.id+'\','+e.season+','+e.episode+')"><i class="fa-solid fa-xmark"></i></button>'
         +'</div>';
     }).join('');
 
-    html+='<div class="series-card" id="sc-'+i+'">'
+    html+='<div class="series-card" id="sc-'+i+'" style="animation-delay:'+(Math.min(i,14)*35)+'ms">'
       +'<div class="series-header" onclick="toggleSeries(this)">'
       +'<img class="series-poster" id="sp-'+i+'" src="'+(poster||'')+'" onerror="this.style.background=\'var(--surface2)\'" alt="">'
       +'<div class="series-info">'
@@ -561,6 +757,7 @@ function filterSeason(sel){
 function addMovie(){
   var id=xid($('mi').value),url=$('mu').value.trim(),u1=$('m1').value.trim(),u7=$('m7').value.trim();
   if(!id||!url){toast('IMDB ID ও URL দিন','e');return;}
+  if(!validId(id)){toast('সঠিক IMDB ID দিন (যেমন tt0816692)','e');return;}
   var item={id,type:'movie',streamUrl:url};
   if(u1)item.streamUrl1080p=u1;
   if(u7)item.streamUrl720p=u7;
@@ -570,6 +767,8 @@ function addMovie(){
 function addEp(){
   var id=xid($('si').value),s=parseInt($('ss').value),e=parseInt($('se').value),url=$('su').value.trim();
   if(!id||!url){toast('IMDB ID ও URL দিন','e');return;}
+  if(!validId(id)){toast('সঠিক IMDB ID দিন (যেমন tt0944947)','e');return;}
+  if(!s||s<1||!e||e<1){toast('Season ও Episode সংখ্যা ঠিক দিন','e');return;}
   post({id,type:'series',episodes:[{season:s,episode:e,streamUrl:url}]},d=>{
     D=d;updateStats();$('su').value='';$('se').value=e+1;renderTab();toast('Episode linked!');
   });
@@ -577,17 +776,127 @@ function addEp(){
 
 function post(item,cb){
   fetch('/api/movies',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(item)})
-  .then(r=>r.json()).then(d=>cb(d.data));
+  .then(r=>r.json()).then(d=>{ if(d.ok) cb(d.data); else toast(d.error||'Save failed','e'); });
 }
 
 function del(id){
-  if(!confirm('Remove "'+id+'" completely?'))return;
-  fetch('/api/movies/'+id,{method:'DELETE'}).then(r=>r.json()).then(d=>{D=d.data;updateStats();renderTab();toast('Removed','e');});
+  showConfirm('Remove "'+id+'"?','This deletes it completely, including all episodes if it\'s a series.',function(){
+    fetch('/api/movies/'+id,{method:'DELETE'}).then(r=>r.json()).then(d=>{D=d.data;updateStats();renderTab();toast('Removed','e');});
+  });
 }
 
 function delEp(id,s,e){
-  fetch('/api/movies/'+id+'/episodes/'+s+'/'+e,{method:'DELETE'}).then(r=>r.json()).then(d=>{D=d.data;updateStats();renderTab();toast('Episode removed','e');});
+  showConfirm('Remove S'+s+'E'+e+'?','This stream link will be deleted.',function(){
+    fetch('/api/movies/'+id+'/episodes/'+s+'/'+e,{method:'DELETE'}).then(r=>r.json()).then(d=>{D=d.data;updateStats();renderTab();toast('Episode removed','e');});
+  });
 }
+
+// ── Inline episode URL editing ──────────────────────────────────────────────
+function editEpInline(btn){
+  var row=btn.closest('.ep-row');
+  var urlSpan=row.querySelector('.ep-url');
+  var current=urlSpan.title;
+  var input=document.createElement('input');
+  input.className='ep-url-input';
+  input.value=current;
+  urlSpan.replaceWith(input);
+  input.focus();
+  btn.style.display='none';
+
+  var saveBtn=document.createElement('button');
+  saveBtn.className='ep-save';
+  saveBtn.innerHTML='<i class="fa-solid fa-check"></i>';
+  btn.insertAdjacentElement('afterend', saveBtn);
+
+  function commit(){
+    var id=row.dataset.id, s=row.dataset.s, e=row.dataset.e, newUrl=input.value.trim();
+    if(!newUrl){toast('URL খালি রাখা যাবে না','e');return;}
+    fetch('/api/movies/'+id+'/episodes/'+s+'/'+e,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({streamUrl:newUrl})})
+    .then(r=>r.json()).then(d=>{
+      if(d.ok){D=d.data;toast('Episode link updated!');renderTab();}
+      else toast(d.error||'Update failed','e');
+    });
+  }
+  saveBtn.onclick=commit;
+  input.onkeydown=function(ev){ if(ev.key==='Enter') commit(); };
+}
+
+// ── Edit / Details modal (movies) ───────────────────────────────────────────
+var editingId=null;
+function openEdit(id, type){
+  var item=D.find(m=>m.id===id && m.type===type);
+  if(!item)return;
+  editingId=id;
+  $('em-id').value=id;
+  $('em-url').value=item.streamUrl||'';
+  $('em-1080').value=item.streamUrl1080p||'';
+  $('em-720').value=item.streamUrl720p||'';
+
+  var cached=nameCache[id];
+  $('em-title').textContent=cached?cached.title:id;
+  $('em-poster').src=(cached&&cached.poster)?cached.poster:'';
+  $('em-year').textContent=cached&&cached.year?cached.year:'';
+  $('em-rating').innerHTML=cached&&cached.rating?'<i class="fa-solid fa-star" style="color:var(--amber)"></i> '+cached.rating:'';
+  if(cached&&cached.plot){$('em-plot').textContent=cached.plot;$('em-plot').style.display='block';}
+  else $('em-plot').style.display='none';
+
+  $('edit-overlay').classList.add('show');
+}
+function closeEdit(){ $('edit-overlay').classList.remove('show'); editingId=null; }
+
+function saveEdit(){
+  var id=$('em-id').value;
+  var body={type:'movie',streamUrl:$('em-url').value.trim(),streamUrl1080p:$('em-1080').value.trim(),streamUrl720p:$('em-720').value.trim()};
+  if(!body.streamUrl){toast('Source Stream URL খালি রাখা যাবে না','e');return;}
+  fetch('/api/movies/'+id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})
+  .then(r=>r.json()).then(d=>{
+    if(d.ok){D=d.data;updateStats();renderTab();closeEdit();toast('Saved!');}
+    else toast(d.error||'Save failed','e');
+  });
+}
+
+function delFromModal(){
+  var id=$('em-id').value;
+  closeEdit();
+  del(id);
+}
+
+function refreshMeta(){
+  var id=$('em-id').value;
+  var btn=$('em-refresh-btn');
+  btn.classList.add('spin');
+  delete nameCache[id];
+  fetch('/api/admin-meta/'+id+'?fresh=1').then(r=>r.json()).then(data=>{
+    var obj={title:data.name||id,poster:data.poster||null,year:data.year||'',rating:data.rating||'',genre:data.genre||'',runtime:data.runtime||'',plot:data.plot||''};
+    nameCache[id]=obj;
+    btn.classList.remove('spin');
+    $('em-title').textContent=obj.title;
+    $('em-poster').src=obj.poster||'';
+    $('em-year').textContent=obj.year;
+    $('em-rating').innerHTML=obj.rating?'<i class="fa-solid fa-star" style="color:var(--amber)"></i> '+obj.rating:'';
+    if(obj.plot){$('em-plot').textContent=obj.plot;$('em-plot').style.display='block';} else $('em-plot').style.display='none';
+    renderTab();
+    toast('Metadata refreshed!');
+  }).catch(()=>{btn.classList.remove('spin');toast('Refresh failed','e');});
+}
+
+// ── Generic confirm modal ────────────────────────────────────────────────────
+var confirmCb=null;
+function showConfirm(text, sub, cb){
+  $('confirm-text').textContent=text;
+  $('confirm-sub').textContent=sub||"This action can't be undone.";
+  confirmCb=cb;
+  $('confirm-overlay').classList.add('show');
+}
+function closeConfirm(){ $('confirm-overlay').classList.remove('show'); confirmCb=null; }
+$('confirm-ok-btn').onclick=function(){ var cb=confirmCb; closeConfirm(); if(cb) cb(); };
+
+document.addEventListener('keydown',function(ev){
+  if(ev.key==='Escape'){ closeEdit(); closeConfirm(); }
+});
+[$('edit-overlay'),$('confirm-overlay')].forEach(function(ov){
+  ov.addEventListener('click',function(ev){ if(ev.target===ov){ closeEdit(); closeConfirm(); } });
+});
 
 function cp(){
   navigator.clipboard.writeText(BASE+'/manifest.json').then(()=>toast('Manifest URL copied!'));
@@ -599,6 +908,7 @@ function toast(msg,type){
   t.className='toast show';
   setTimeout(()=>t.className='toast',2500);
 }
+
 
 init();
 </script>
