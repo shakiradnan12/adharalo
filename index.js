@@ -288,7 +288,7 @@ app.get('/manifest.json', (req, res) => {
   const manifest = {
     id: 'org.adharalo.ftpaddon',
     version: '2.5.0',
-    name: 'AdharAlo Server Engine',
+    name: 'AdharAlo Support - Adnan',
     description: 'Enterprise Premium Streaming Gateway for Personal Library Stream Nodes.',
     resources: ['catalog', 'meta', 'stream'],
     types: ['movie', 'series'],
