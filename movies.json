@@ -277,5 +277,16 @@
     "id": "tt35019998",
     "type": "movie",
     "streamUrl": "http://ftp.adharalo.com/New_Movies/South%20Iindian%20Hindi%20%20Dubbed/2026/Parasakthi%20%282026%29/MovieLinkBD.com%20-%20Parasakthi.2026.720p.Hindi.AAC.WEB-DL.h264.mp4"
+  },
+  {
+    "id": "tt11318332",
+    "type": "series",
+    "episodes": [
+      {
+        "season": 5,
+        "episode": 1,
+        "streamUrl": "http://ftp.adharalo.com/New_Series/Bangla/2025/Bachelor%20Point/s01/MovieLinkBD.Com-Bachelor%20Point%20%282025%29-S05E01-08%20Bengali%20BongoBD%20WEB-DL%20720p.mp4"
+      }
+    ]
   }
 ]
